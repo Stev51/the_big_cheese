@@ -31,10 +31,10 @@ TYCOON_POINTS = [(X_BUF, GUI_ROOF_HEIGHT + Y_BUF), (FWC - X_BUF, GUI_ROOF_HEIGHT
 PIZZA_POINTS = [(FWC + X_BUF, GUI_ROOF_HEIGHT + Y_BUF), (FWIDTH - X_BUF, GUI_ROOF_HEIGHT + Y_BUF), (FWIDTH - X_BUF, FHEIGHT - Y_BUF), (FWC + X_BUF, FHEIGHT - Y_BUF)]
 PW0 = PIZZA_POINTS[0][0]
 PW1 = PIZZA_POINTS[1][0]
-PWC = ((PW1 - PW0) / 2) + PW0
+PWC = (GUI_SQUARE_SIZE / 2) + PW0
 PH0 = PIZZA_POINTS[0][1]
 PH1 = PIZZA_POINTS[3][1]
-PHC = ((PH1 - PH0) / 2) + PH0
+PHC = (GUI_SQUARE_SIZE / 2) + PH0
 
 STARTING_MONEY = 10
 INCOME_TIME = 60
@@ -217,40 +217,40 @@ def draw(canvas):
 		timerIncome = 0
 	
 	# Banner graphics
-	canvas.draw_image(img_bannerBase, (1120/2, 175/2), (1120, 175), (FWC, 87), (1120, 175))
+	canvas.draw_image(img_bannerBase, (560, 87.5), (1120, 175), (FWC, 87), (1120, 175))
 	
 	if timerIncome >= INCOME_TIME/2:
-		canvas.draw_image(img_animSmoke1, (85/2, 85/2), (85, 85), (FWC - 60, 90), (85, 85))
+		canvas.draw_image(img_animSmoke1, (42.5, 42.5), (85, 85), (500, 90), (85, 85))
 	else:
-		canvas.draw_image(img_animSmoke2, (85/2, 85/2), (85, 85), (FWC - 60, 90), (85, 85))
+		canvas.draw_image(img_animSmoke2, (42.5, 42.5), (85, 85), (500, 90), (85, 85))
 	
 	# Tycoon GUI
 	canvas.draw_polygon(TYCOON_POINTS, 1, SQUARE_COLOR, SQUARE_COLOR)
 	
-	canvas.draw_image(img_buttonGoon, (250/2, 40/2), (250, 40), (TYCOON_POINTS[0][0] + 105, TYCOON_POINTS[0][1] + 40), (170, 40))
-	canvas.draw_text("Buy Goon - " + str(goon_price), (TYCOON_POINTS[0][0] + 20, TYCOON_POINTS[0][1] + 60), 12, "White")
+	canvas.draw_image(img_buttonGoon, (125, 20), (250, 40), (185, 243), (170, 40))
+	canvas.draw_text("Buy Goon - " + str(goon_price), (100, 263), 12, "White")
 	
-	canvas.draw_image(img_buttonGoon, (250/2, 40/2), (250, 40), (TYCOON_POINTS[0][0] + 105, TYCOON_POINTS[0][1] + 100), (170, 40))
-	canvas.draw_text("Upgrade Goons - " + str(geff_price), (TYCOON_POINTS[0][0] + 20, TYCOON_POINTS[0][1] + 120), 12, "White")
+	canvas.draw_image(img_buttonGoon, (125, 20), (250, 40), (185, 303), (170, 40))
+	canvas.draw_text("Upgrade Goons - " + str(geff_price), (100, 323), 12, "White")
 	
-	canvas.draw_image(img_buttonEvil, (250/2, 40/2), (250, 40), (TYCOON_POINTS[0][0] + 105, TYCOON_POINTS[0][1] + 160), (170, 40))
-	canvas.draw_image(img_buttonEvil, (250/2, 40/2), (250, 40), (TYCOON_POINTS[0][0] + 105, TYCOON_POINTS[0][1] + 220), (170, 40))
-	canvas.draw_image(img_buttonEvil, (250/2, 40/2), (250, 40), (TYCOON_POINTS[0][0] + 105, TYCOON_POINTS[0][1] + 280), (170, 40))
-	canvas.draw_image(img_buttonEvil, (250/2, 40/2), (250, 40), (TYCOON_POINTS[0][0] + 105, TYCOON_POINTS[0][1] + 340), (170, 40))
+	canvas.draw_image(img_buttonEvil, (125, 20), (250, 40), (185, 363), (170, 40))
+	canvas.draw_image(img_buttonEvil, (125, 20), (250, 40), (185, 423), (170, 40))
+	canvas.draw_image(img_buttonEvil, (125, 20), (250, 40), (185, 483), (170, 40))
+	canvas.draw_image(img_buttonEvil, (125, 20), (250, 40), (185, 543), (170, 40))
 	
-	canvas.draw_image(img_buttonRestaurant, (250/2, 40/2), (250, 40), (TYCOON_POINTS[0][0] + 295, TYCOON_POINTS[0][1] + 40), (170, 40))
+	canvas.draw_image(img_buttonRestaurant, (125, 20), (250, 40), (375, 243), (170, 40))
 	if flag_business == False:
-		canvas.draw_text("Purchase Legitimate Business - " + str(business_price), (TYCOON_POINTS[1][0] - GUI_SQUARE_SIZE/2 + 10, TYCOON_POINTS[0][1] + 60), 12, "White")
+		canvas.draw_text("Purchase Legitimate Business - " + str(business_price), (290, 263), 12, "White")
 	else:
-		canvas.draw_text("---", (TYCOON_POINTS[1][0] - GUI_SQUARE_SIZE/2 + 10, TYCOON_POINTS[0][1] + 60), 12, "White")
+		canvas.draw_text("---", (290, 263), 12, "White")
 	
-	canvas.draw_image(img_buttonRestaurant, (250/2, 40/2), (250, 40), (TYCOON_POINTS[0][0] + 295, TYCOON_POINTS[0][1] + 100), (170, 40))
-	canvas.draw_text("Upgrade Restaurant - " + str(pizza_price), (TYCOON_POINTS[1][0] - GUI_SQUARE_SIZE/2 + 10, TYCOON_POINTS[1][1] + 120), 12, "White")
+	canvas.draw_image(img_buttonRestaurant, (125, 20), (250, 40), (375, 303), (170, 40))
+	canvas.draw_text("Upgrade Restaurant - " + str(pizza_price), (290, 323), 12, "White")
 	
-	canvas.draw_image(img_buttonEvil, (250/2, 40/2), (250, 40), (TYCOON_POINTS[0][0] + 295, TYCOON_POINTS[0][1] + 160), (170, 40))
-	canvas.draw_image(img_buttonEvil, (250/2, 40/2), (250, 40), (TYCOON_POINTS[0][0] + 295, TYCOON_POINTS[0][1] + 220), (170, 40))
-	canvas.draw_image(img_buttonEvil, (250/2, 40/2), (250, 40), (TYCOON_POINTS[0][0] + 295, TYCOON_POINTS[0][1] + 280), (170, 40))
-	canvas.draw_image(img_buttonEvil, (250/2, 40/2), (250, 40), (TYCOON_POINTS[0][0] + 295, TYCOON_POINTS[0][1] + 340), (170, 40))
+	canvas.draw_image(img_buttonEvil, (125, 20), (250, 40), (375, 363), (170, 40))
+	canvas.draw_image(img_buttonEvil, (125, 20), (250, 40), (375, 423), (170, 40))
+	canvas.draw_image(img_buttonEvil, (125, 20), (250, 40), (375, 483), (170, 40))
+	canvas.draw_image(img_buttonEvil, (125, 20), (250, 40), (375, 543), (170, 40))
 	
 	# Pizzatron code
 	if flag_business == True:
@@ -272,37 +272,37 @@ def draw(canvas):
 		canvas.draw_image(img_pizzaBase, (200, 200), (400, 400), (PWC, PHC), (400, 400))
 		
 		# Buttons
-		canvas.draw_polygon([(PW0 + 20, PH1 - 140), (PW0 + 70, PH1 - 140), (PW0 + 70, PH1 - 90), (PW0 + 20, PH1 - 90)], 1, BUTTON_COLOR, BUTTON_COLOR)
-		canvas.draw_polygon([(PW0 + 90, PH1 - 140), (PW0 + 140, PH1 - 140), (PW0 + 140, PH1 - 90), (PW0 + 90, PH1 - 90)], 1, BUTTON_COLOR, BUTTON_COLOR)
-		canvas.draw_polygon([(PW0 + 160, PH1 - 140), (PW0 + 210, PH1 - 140), (PW0 + 210, PH1 - 90), (PW0 + 160, PH1 - 90)], 1, BUTTON_COLOR, BUTTON_COLOR)
-		canvas.draw_polygon([(PW0 + 20, PH1 - 70), (PW0 + 70, PH1 - 70), (PW0 + 70, PH1 - 20), (PW0 + 20, PH1 - 20)], 1, BUTTON_COLOR, BUTTON_COLOR)
-		canvas.draw_polygon([(PW0 + 90, PH1 - 70), (PW0 + 140, PH1 - 70), (PW0 + 140, PH1 - 20), (PW0 + 90, PH1 - 20)], 1, BUTTON_COLOR, BUTTON_COLOR)
-		canvas.draw_polygon([(PW0 + 160, PH1 - 70), (PW0 + 210, PH1 - 70), (PW0 + 210, PH1 - 20), (PW0 + 160, PH1 - 20)], 1, BUTTON_COLOR, BUTTON_COLOR)
+		canvas.draw_polygon([(660, 463), (710, 463), (710, 513), (660, 513)], 1, BUTTON_COLOR, BUTTON_COLOR)
+		canvas.draw_polygon([(730, 463), (780, 463), (780, 513), (730, 513)], 1, BUTTON_COLOR, BUTTON_COLOR)
+		canvas.draw_polygon([(800, 463), (850, 463), (850, 513), (800, 513)], 1, BUTTON_COLOR, BUTTON_COLOR)
+		canvas.draw_polygon([(660, 533), (710, 533), (710, 583), (660, 583)], 1, BUTTON_COLOR, BUTTON_COLOR)
+		canvas.draw_polygon([(730, 533), (780, 533), (780, 583), (730, 583)], 1, BUTTON_COLOR, BUTTON_COLOR)
+		canvas.draw_polygon([(800, 533), (850, 533), (850, 583), (800, 583)], 1, BUTTON_COLOR, BUTTON_COLOR)
 		
 		# Pizza button labels
 		# Also temp pizza contents
-		canvas.draw_image(img_iconCheese, (50, 50), (100, 100), (PW0 + 45, PH1 - 115), (50, 50))
-		canvas.draw_image(img_iconPepp, (50, 50), (100, 100), (PW0 + 115, PH1 - 115), (50, 50))
-		canvas.draw_image(img_iconMush, (50, 50), (100, 100), (PW0 + 185, PH1 - 115), (50, 50))
-		canvas.draw_image(img_iconOlive, (50, 50), (100, 100), (PW0 + 45, PH1 - 45), (50, 50))
-		canvas.draw_image(img_iconBacon, (50, 50), (100, 100), (PW0 + 115, PH1 - 45), (50, 50))
-		canvas.draw_image(img_iconBanana, (50, 50), (100, 100), (PW0 + 185, PH1 - 45), (50, 50))
-		canvas.draw_text(str(player_pizza), (PW0 + 10, PH0 + 120), 20, "White") #<-- Temporary
+		canvas.draw_image(img_iconCheese, (50, 50), (100, 100), (685, 488), (50, 50))
+		canvas.draw_image(img_iconPepp, (50, 50), (100, 100), (755, 488), (50, 50))
+		canvas.draw_image(img_iconMush, (50, 50), (100, 100), (825, 488), (50, 50))
+		canvas.draw_image(img_iconOlive, (50, 50), (100, 100), (685, 558), (50, 50))
+		canvas.draw_image(img_iconBacon, (50, 50), (100, 100), (755, 558), (50, 50))
+		canvas.draw_image(img_iconBanana, (50, 50), (100, 100), (825, 558), (50, 50))
+		canvas.draw_text(str(player_pizza), (650, 323), 20, "White") #<-- Temporary
 		
 		# Bell
 		if pizza_gamestate == 1:
-			canvas.draw_image(img_bell2, (25, 25), (50, 50), (PW0 + 45, PH1 - 185), (50, 50))
+			canvas.draw_image(img_bell2, (25, 25), (50, 50), (685, 418), (50, 50))
 		else:
-			canvas.draw_image(img_bell1, (25, 25), (50, 50), (PW0 + 45, PH1 - 185), (50, 50))
+			canvas.draw_image(img_bell1, (25, 25), (50, 50), (685, 418), (50, 50))
 		
 		# Order display
 		if pizza_gamestate == 1 and timer_order > 0:
-			canvas.draw_text(str(math.floor(timer_order/60)+1), (PW0 + 10, PH0 + 40), 20, "White")
-			canvas.draw_text(str(ordered_pizza), (PW0 + 10, PH0 + 80), 20, "White")
+			canvas.draw_text(str(math.floor(timer_order/60)+1), (650, 243), 20, "White")
+			canvas.draw_text(str(ordered_pizza), (650, 283), 20, "White")
 		
 		# Final result display
 		if pizza_gamestate == 0:
-			canvas.draw_text("You earned $" + str(round(score)) + "!", (PW0 + 10, PH0 + 80), 20, "White")
+			canvas.draw_text("You earned $" + str(round(score)) + "!", (650, 283), 20, "White")
 	
 	else:
 		canvas.draw_image(img_sign, (100, 100), (200, 200), (PWC, PHC), (200, 200))
@@ -314,23 +314,23 @@ def draw(canvas):
 	canvas.draw_polygon(TYCOON_POINTS, GUI_WIDTH, GUI_COLOR)
 	canvas.draw_polygon(PIZZA_POINTS, GUI_WIDTH, GUI_COLOR)
 	
-	canvas.draw_image(img_labelCrime, (188/2, 28/2), (188, 28), (TYCOON_POINTS[0][0] + 188/2, TYCOON_POINTS[0][1] - 28/2), (188, 28))
-	canvas.draw_image(img_labelBusiness, (188/2, 28/2), (188, 28), (PIZZA_POINTS[1][0] - 70, PIZZA_POINTS[1][1] - 28/2), (188, 28))
+	canvas.draw_image(img_labelCrime, (94, 14), (188, 28), (174, 189), (188, 28))
+	canvas.draw_image(img_labelBusiness, (94, 14), (188, 28), (970, 189), (188, 28))
 	
-	canvas.draw_image(img_labelDough, (250/2, 150/2), (250, 150), (250*0.3, 150*0.3), (250*0.6, 150*0.6))
+	canvas.draw_image(img_labelDough, (125, 75), (250, 150), (75, 45), (150, 90))
 	canvas.draw_polygon([(137, 22), (151 + frame.get_canvas_textwidth(str(money), 24), 22), (151 + frame.get_canvas_textwidth(str(money), 24), 66), (137, 66)], 1, "Black", "Black")
 	canvas.draw_polygon([(141, 26), (147 + frame.get_canvas_textwidth(str(money), 24), 26), (147 + frame.get_canvas_textwidth(str(money), 24), 62), (141, 62)], 1, "White", "White")
 	canvas.draw_text(str(money), (144, 62), 24, "Black")
 	
-	canvas.draw_image(img_labelGoons, (250/2, 150/2), (250, 150), (FWIDTH - 250*0.3, 150*0.3), (250*0.6, 150*0.6))
-	canvas.draw_polygon([(FWIDTH - frame.get_canvas_textwidth(goons, 24) - 170, 22), (FWIDTH - 156, 22), (FWIDTH - 156, 66), (FWIDTH - frame.get_canvas_textwidth(goons, 24) - 170, 66)], 1, "Black", "Black")
-	canvas.draw_polygon([(FWIDTH - frame.get_canvas_textwidth(goons, 24) - 166, 26), (FWIDTH - 160, 26), (FWIDTH - 160, 62), (FWIDTH - frame.get_canvas_textwidth(goons, 24) - 166, 62)], 1, "White", "White")
-	canvas.draw_text(str(goons), (FWIDTH - frame.get_canvas_textwidth(goons, 24) - 163, 62), 24, "Black")
+	canvas.draw_image(img_labelGoons, (125, 75), (250, 150), (1045, 45), (150, 90))
+	canvas.draw_polygon([(950 - frame.get_canvas_textwidth(goons, 24), 22), (964, 22), (964, 66), (950 - frame.get_canvas_textwidth(goons, 24), 66)], 1, "Black", "Black")
+	canvas.draw_polygon([(954 - frame.get_canvas_textwidth(goons, 24), 26), (960, 26), (960, 62), (954 - frame.get_canvas_textwidth(goons, 24), 62)], 1, "White", "White")
+	canvas.draw_text(str(goons), (957 - frame.get_canvas_textwidth(goons, 24), 62), 24, "Black")
 	
 	canvas.draw_text("Pizza Earnings: $" + str(pizza_multiplier * PIZZA_BASE_REWARD) + "/P", (10, 120), 16, "White")
 	
 	tempeff = "Goon Efficiency: $" + str(goon_efficiency) + "/s"
-	canvas.draw_text(tempeff, (FWIDTH - frame.get_canvas_textwidth(tempeff, 16) - 10, 120), 16, "White")
+	canvas.draw_text(tempeff, (1110 - frame.get_canvas_textwidth(tempeff, 16), 120), 16, "White")
 
 # Game frame setup
 frame = simplegui.create_frame("The Big Cheese", FWIDTH, FHEIGHT)
