@@ -21,6 +21,7 @@ BACKGROUND_COLOR = "Grey"
 GUI_WIDTH = 5
 GUI_COLOR = "Silver"
 SQUARE_COLOR = "DimGrey"
+BUTTON_COLOR = "Silver"
 GUI_ROOF_HEIGHT = 175
 GUI_SQUARE_SIZE = 400
 
@@ -30,10 +31,10 @@ TYCOON_POINTS = [(X_BUF, GUI_ROOF_HEIGHT + Y_BUF), (FWC - X_BUF, GUI_ROOF_HEIGHT
 PIZZA_POINTS = [(FWC + X_BUF, GUI_ROOF_HEIGHT + Y_BUF), (FWIDTH - X_BUF, GUI_ROOF_HEIGHT + Y_BUF), (FWIDTH - X_BUF, FHEIGHT - Y_BUF), (FWC + X_BUF, FHEIGHT - Y_BUF)]
 PW0 = PIZZA_POINTS[0][0]
 PW1 = PIZZA_POINTS[1][0]
-PWC = (PW1 / 2) + PW0
+PWC = ((PW1 - PW0) / 2) + PW0
 PH0 = PIZZA_POINTS[0][1]
 PH1 = PIZZA_POINTS[3][1]
-PHC = (PH1 / 2) + PH0
+PHC = ((PH1 - PH0) / 2) + PH0
 
 STARTING_MONEY = 10
 INCOME_TIME = 60
@@ -76,18 +77,25 @@ img_labelDough = simplegui.load_image("https://i.imgur.com/6bhPqYx.png")
 img_labelGoons = simplegui.load_image("https://i.imgur.com/05i317b.png")
 img_labelCrime = simplegui.load_image("https://i.imgur.com/Q2KlutF.png")
 img_labelBusiness = simplegui.load_image("https://i.imgur.com/hxIpu4B.png")
+img_sign = simplegui.load_image("https://i.imgur.com/xczaKmo.png")
 img_buttonGoon = simplegui.load_image("https://i.imgur.com/sjOPe4h.png")
 img_buttonRestaurant = simplegui.load_image("https://i.imgur.com/NmhRRrx.png")
 img_buttonEvil = simplegui.load_image("https://i.imgur.com/P6MhUa2.png")
+img_pizzaBase = simplegui.load_image("https://i.imgur.com/PtfNkX6.png")
 img_iconCheese = simplegui.load_image("https://i.imgur.com/905s2A2.png")
 img_iconPepp = simplegui.load_image("https://i.imgur.com/7lAReNE.png")
 img_iconMush = simplegui.load_image("https://i.imgur.com/sLMn507.png")
 img_iconOlive = simplegui.load_image("https://i.imgur.com/oPJ652R.png")
 img_iconBacon = simplegui.load_image("https://i.imgur.com/Rh1Whqc.png")
 img_iconBanana = simplegui.load_image("https://i.imgur.com/mcOafIh.png")
+img_bell1 = simplegui.load_image("https://i.imgur.com/9V4WWAE.png")
+img_bell2 = simplegui.load_image("https://i.imgur.com/jhqd84B.png")
 img_bannerBase = simplegui.load_image("https://i.imgur.com/RcG2EdD.png")
 img_animSmoke1 = simplegui.load_image("https://i.imgur.com/oyRaeNc.png")
 img_animSmoke2 = simplegui.load_image("https://i.imgur.com/ugknTYL.png")
+img_goon1 = simplegui.load_image("https://i.imgur.com/6s1MP1Y.png")
+img_goon2 = simplegui.load_image("https://i.imgur.com/s6Dk0TO.png")
+img_goon3 = simplegui.load_image("https://i.imgur.com/2f9e988.png")
 
 print("Done.")
 
@@ -260,29 +268,32 @@ def draw(canvas):
 			print("ERROR: Broken pizza_gamestate for pizza minigame, defaulting to state 0")
 			pizza_gamestate = 0
 		
-		# Buttons
-		canvas.draw_polygon([(PW0 + 20, PH1 - 140), (PW0 + 70, PH1 - 140), (PW0 + 70, PH1 - 90), (PW0 + 20, PH1 - 90)], 1, "Grey", "Grey")
-		canvas.draw_polygon([(PW0 + 90, PH1 - 140), (PW0 + 140, PH1 - 140), (PW0 + 140, PH1 - 90), (PW0 + 90, PH1 - 90)], 1, "Grey", "Grey")
-		canvas.draw_polygon([(PW0 + 160, PH1 - 140), (PW0 + 210, PH1 - 140), (PW0 + 210, PH1 - 90), (PW0 + 160, PH1 - 90)], 1, "Grey", "Grey")
-		canvas.draw_polygon([(PW0 + 20, PH1 - 70), (PW0 + 70, PH1 - 70), (PW0 + 70, PH1 - 20), (PW0 + 20, PH1 - 20)], 1, "Grey", "Grey")
-		canvas.draw_polygon([(PW0 + 90, PH1 - 70), (PW0 + 140, PH1 - 70), (PW0 + 140, PH1 - 20), (PW0 + 90, PH1 - 20)], 1, "Grey", "Grey")
-		canvas.draw_polygon([(PW0 + 160, PH1 - 70), (PW0 + 210, PH1 - 70), (PW0 + 210, PH1 - 20), (PW0 + 160, PH1 - 20)], 1, "Grey", "Grey")
+		# Base
+		canvas.draw_image(img_pizzaBase, (200, 200), (400, 400), (PWC, PHC), (400, 400))
 		
-		# Temp text labels -- Cheese, Pepperoni, Mushroom, Olive, Bacon, Banana Pepper
+		# Buttons
+		canvas.draw_polygon([(PW0 + 20, PH1 - 140), (PW0 + 70, PH1 - 140), (PW0 + 70, PH1 - 90), (PW0 + 20, PH1 - 90)], 1, BUTTON_COLOR, BUTTON_COLOR)
+		canvas.draw_polygon([(PW0 + 90, PH1 - 140), (PW0 + 140, PH1 - 140), (PW0 + 140, PH1 - 90), (PW0 + 90, PH1 - 90)], 1, BUTTON_COLOR, BUTTON_COLOR)
+		canvas.draw_polygon([(PW0 + 160, PH1 - 140), (PW0 + 210, PH1 - 140), (PW0 + 210, PH1 - 90), (PW0 + 160, PH1 - 90)], 1, BUTTON_COLOR, BUTTON_COLOR)
+		canvas.draw_polygon([(PW0 + 20, PH1 - 70), (PW0 + 70, PH1 - 70), (PW0 + 70, PH1 - 20), (PW0 + 20, PH1 - 20)], 1, BUTTON_COLOR, BUTTON_COLOR)
+		canvas.draw_polygon([(PW0 + 90, PH1 - 70), (PW0 + 140, PH1 - 70), (PW0 + 140, PH1 - 20), (PW0 + 90, PH1 - 20)], 1, BUTTON_COLOR, BUTTON_COLOR)
+		canvas.draw_polygon([(PW0 + 160, PH1 - 70), (PW0 + 210, PH1 - 70), (PW0 + 210, PH1 - 20), (PW0 + 160, PH1 - 20)], 1, BUTTON_COLOR, BUTTON_COLOR)
+		
+		# Pizza button labels
 		# Also temp pizza contents
-		canvas.draw_text("C", (PW0 + 20, PH1 - 90), 30, "White")
-		canvas.draw_text("P", (PW0 + 90, PH1 - 90), 30, "White")
-		canvas.draw_text("M", (PW0 + 160, PH1 - 90), 30, "White")
-		canvas.draw_text("O", (PW0 + 20, PH1 - 20), 30, "White")
-		canvas.draw_text("B", (PW0 + 90, PH1 - 20), 30, "White")
-		canvas.draw_text("N", (PW0 + 160, PH1 - 20), 30, "White")
-		canvas.draw_text(str(player_pizza), (PW0 + 10, PH0 + 120), 20, "White")
+		canvas.draw_image(img_iconCheese, (50, 50), (100, 100), (PW0 + 45, PH1 - 115), (50, 50))
+		canvas.draw_image(img_iconPepp, (50, 50), (100, 100), (PW0 + 115, PH1 - 115), (50, 50))
+		canvas.draw_image(img_iconMush, (50, 50), (100, 100), (PW0 + 185, PH1 - 115), (50, 50))
+		canvas.draw_image(img_iconOlive, (50, 50), (100, 100), (PW0 + 45, PH1 - 45), (50, 50))
+		canvas.draw_image(img_iconBacon, (50, 50), (100, 100), (PW0 + 115, PH1 - 45), (50, 50))
+		canvas.draw_image(img_iconBanana, (50, 50), (100, 100), (PW0 + 185, PH1 - 45), (50, 50))
+		canvas.draw_text(str(player_pizza), (PW0 + 10, PH0 + 120), 20, "White") #<-- Temporary
 		
 		# Bell
-		bell_color = "Red"
 		if pizza_gamestate == 1:
-			bell_color = "Yellow"
-		canvas.draw_polygon([(PW0 + 20, PH1 - 210), (PW0 + 70, PH1 - 210), (PW0 + 70, PH1 - 160), (PW0 + 20, PH1 - 160)], 1, bell_color, bell_color)
+			canvas.draw_image(img_bell2, (25, 25), (50, 50), (PW0 + 45, PH1 - 185), (50, 50))
+		else:
+			canvas.draw_image(img_bell1, (25, 25), (50, 50), (PW0 + 45, PH1 - 185), (50, 50))
 		
 		# Order display
 		if pizza_gamestate == 1 and timer_order > 0:
@@ -294,7 +305,7 @@ def draw(canvas):
 			canvas.draw_text("You earned $" + str(round(score)) + "!", (PW0 + 10, PH0 + 80), 20, "White")
 	
 	else:
-		canvas.draw_text("NOTHIN' TO SEE HERE", PIZZA_POINTS[3], 20, "White")
+		canvas.draw_image(img_sign, (100, 100), (200, 200), (PWC, PHC), (200, 200))
 	
 	# Meta GUI
 	canvas.draw_line((0, GUI_ROOF_HEIGHT), (FWIDTH, GUI_ROOF_HEIGHT), GUI_WIDTH, GUI_COLOR)
