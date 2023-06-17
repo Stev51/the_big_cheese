@@ -67,7 +67,7 @@ ordered_pizza = [0, 0, 0, 0, 0, 0]
 player_pizza = [0, 0, 0, 0, 0, 0]
 dummy_list = [0, 1, 2, 3, 4, 5]
 
-# Graphic resources
+# Graphic resources ///
 print("Loading graphic resources...")
 img_logo = simplegui.load_image("https://i.imgur.com/XfUa7qn.png")
 img_labelDough = simplegui.load_image("https://i.imgur.com/6bhPqYx.png")
