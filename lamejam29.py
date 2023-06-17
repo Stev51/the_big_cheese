@@ -17,8 +17,10 @@ FWIDTH = 1120
 FHEIGHT = 630
 FWC = FWIDTH/2
 FHC = FHEIGHT/2
+BACKGROUND_COLOR = "Grey"
 GUI_WIDTH = 5
-GUI_COLOR = "Grey"
+GUI_COLOR = "Silver"
+SQUARE_COLOR = "DimGrey"
 GUI_ROOF_HEIGHT = 175
 GUI_SQUARE_SIZE = 400
 
@@ -38,7 +40,7 @@ INCOME_TIME = 60
 
 GOON_INCREASE = 10
 GEFF_INCREASE = 10
-PIZZA_INCREASE = 10
+PIZZA_INCREASE = 1
 
 BREAK_TIME = 120
 ORDER_TIME = 299
@@ -57,7 +59,7 @@ pizza_multiplier = 1
 goon_price = 10
 geff_price = 15
 business_price = 10
-pizza_price = 15
+pizza_price = 1
 
 pizza_gamestate = 0
 score = 0
@@ -129,9 +131,9 @@ def buy_business():
 		bell_reset() #<-- Don't know if we need this
 
 def buy_pizza_efficiency():
-	global money, pizza_multiplier, pizza_price
-	if money >= pizza_price:
-		money -= pizza_price
+	global goons, pizza_multiplier, pizza_price
+	if goons > pizza_price:
+		goons -= pizza_price
 		pizza_multiplier += 1
 		pizza_price += PIZZA_INCREASE
 
@@ -206,31 +208,41 @@ def draw(canvas):
 		money += goons * goon_efficiency
 		timerIncome = 0
 	
+	# Banner graphics
+	canvas.draw_image(img_bannerBase, (1120/2, 175/2), (1120, 175), (FWC, 87), (1120, 175))
+	
+	if timerIncome >= INCOME_TIME/2:
+		canvas.draw_image(img_animSmoke1, (85/2, 85/2), (85, 85), (FWC - 60, 90), (85, 85))
+	else:
+		canvas.draw_image(img_animSmoke2, (85/2, 85/2), (85, 85), (FWC - 60, 90), (85, 85))
+	
 	# Tycoon GUI
-	canvas.draw_polygon([(TYCOON_POINTS[0][0] + 20, TYCOON_POINTS[0][1] + 20), (TYCOON_POINTS[0][0] + GUI_SQUARE_SIZE/2 - 10, TYCOON_POINTS[0][1] + 20), (TYCOON_POINTS[0][0] + GUI_SQUARE_SIZE/2 - 10, TYCOON_POINTS[0][1] + 60), (TYCOON_POINTS[0][0] + 20, TYCOON_POINTS[0][1] + 60)], 1, "Grey", "Grey")
+	canvas.draw_polygon(TYCOON_POINTS, 1, SQUARE_COLOR, SQUARE_COLOR)
+	
+	canvas.draw_image(img_buttonGoon, (250/2, 40/2), (250, 40), (TYCOON_POINTS[0][0] + 105, TYCOON_POINTS[0][1] + 40), (170, 40))
 	canvas.draw_text("Buy Goon - " + str(goon_price), (TYCOON_POINTS[0][0] + 20, TYCOON_POINTS[0][1] + 60), 12, "White")
 	
-	canvas.draw_polygon([(TYCOON_POINTS[0][0] + 20, TYCOON_POINTS[0][1] + 80), (TYCOON_POINTS[0][0] + GUI_SQUARE_SIZE/2 - 10, TYCOON_POINTS[0][1] + 80), (TYCOON_POINTS[0][0] + GUI_SQUARE_SIZE/2 - 10, TYCOON_POINTS[0][1] + 120), (TYCOON_POINTS[0][0] + 20, TYCOON_POINTS[0][1] + 120)], 1, "Grey", "Grey")
+	canvas.draw_image(img_buttonGoon, (250/2, 40/2), (250, 40), (TYCOON_POINTS[0][0] + 105, TYCOON_POINTS[0][1] + 100), (170, 40))
 	canvas.draw_text("Upgrade Goons - " + str(geff_price), (TYCOON_POINTS[0][0] + 20, TYCOON_POINTS[0][1] + 120), 12, "White")
 	
-	canvas.draw_polygon([(TYCOON_POINTS[0][0] + 20, TYCOON_POINTS[0][1] + 140), (TYCOON_POINTS[0][0] + GUI_SQUARE_SIZE/2 - 10, TYCOON_POINTS[0][1] + 140), (TYCOON_POINTS[0][0] + GUI_SQUARE_SIZE/2 - 10, TYCOON_POINTS[0][1] + 180), (TYCOON_POINTS[0][0] + 20, TYCOON_POINTS[0][1] + 180)], 1, "Grey", "Grey")
-	canvas.draw_polygon([(TYCOON_POINTS[0][0] + 20, TYCOON_POINTS[0][1] + 200), (TYCOON_POINTS[0][0] + GUI_SQUARE_SIZE/2 - 10, TYCOON_POINTS[0][1] + 200), (TYCOON_POINTS[0][0] + GUI_SQUARE_SIZE/2 - 10, TYCOON_POINTS[0][1] + 240), (TYCOON_POINTS[0][0] + 20, TYCOON_POINTS[0][1] + 240)], 1, "Grey", "Grey")
-	canvas.draw_polygon([(TYCOON_POINTS[0][0] + 20, TYCOON_POINTS[0][1] + 260), (TYCOON_POINTS[0][0] + GUI_SQUARE_SIZE/2 - 10, TYCOON_POINTS[0][1] + 260), (TYCOON_POINTS[0][0] + GUI_SQUARE_SIZE/2 - 10, TYCOON_POINTS[0][1] + 300), (TYCOON_POINTS[0][0] + 20, TYCOON_POINTS[0][1] + 300)], 1, "Grey", "Grey")
-	canvas.draw_polygon([(TYCOON_POINTS[0][0] + 20, TYCOON_POINTS[0][1] + 320), (TYCOON_POINTS[0][0] + GUI_SQUARE_SIZE/2 - 10, TYCOON_POINTS[0][1] + 320), (TYCOON_POINTS[0][0] + GUI_SQUARE_SIZE/2 - 10, TYCOON_POINTS[0][1] + 360), (TYCOON_POINTS[0][0] + 20, TYCOON_POINTS[0][1] + 360)], 1, "Grey", "Grey")
+	canvas.draw_image(img_buttonEvil, (250/2, 40/2), (250, 40), (TYCOON_POINTS[0][0] + 105, TYCOON_POINTS[0][1] + 160), (170, 40))
+	canvas.draw_image(img_buttonEvil, (250/2, 40/2), (250, 40), (TYCOON_POINTS[0][0] + 105, TYCOON_POINTS[0][1] + 220), (170, 40))
+	canvas.draw_image(img_buttonEvil, (250/2, 40/2), (250, 40), (TYCOON_POINTS[0][0] + 105, TYCOON_POINTS[0][1] + 280), (170, 40))
+	canvas.draw_image(img_buttonEvil, (250/2, 40/2), (250, 40), (TYCOON_POINTS[0][0] + 105, TYCOON_POINTS[0][1] + 340), (170, 40))
 	
-	canvas.draw_polygon([(TYCOON_POINTS[1][0] - GUI_SQUARE_SIZE/2 + 10, TYCOON_POINTS[1][1] + 20), (TYCOON_POINTS[1][0] - 20, TYCOON_POINTS[1][1] + 20), (TYCOON_POINTS[1][0] - 20, TYCOON_POINTS[1][1] + 60), (TYCOON_POINTS[1][0] - GUI_SQUARE_SIZE/2 + 10, TYCOON_POINTS[1][1] + 60)], 1, "Grey", "Grey")
+	canvas.draw_image(img_buttonRestaurant, (250/2, 40/2), (250, 40), (TYCOON_POINTS[0][0] + 295, TYCOON_POINTS[0][1] + 40), (170, 40))
 	if flag_business == False:
 		canvas.draw_text("Purchase Legitimate Business - " + str(business_price), (TYCOON_POINTS[1][0] - GUI_SQUARE_SIZE/2 + 10, TYCOON_POINTS[0][1] + 60), 12, "White")
 	else:
 		canvas.draw_text("---", (TYCOON_POINTS[1][0] - GUI_SQUARE_SIZE/2 + 10, TYCOON_POINTS[0][1] + 60), 12, "White")
 	
-	canvas.draw_polygon([(TYCOON_POINTS[1][0] - GUI_SQUARE_SIZE/2 + 10, TYCOON_POINTS[1][1] + 80), (TYCOON_POINTS[1][0] - 20, TYCOON_POINTS[1][1] + 80), (TYCOON_POINTS[1][0] - 20, TYCOON_POINTS[1][1] + 120), (TYCOON_POINTS[1][0] - GUI_SQUARE_SIZE/2 + 10, TYCOON_POINTS[1][1] + 120)], 1, "Grey", "Grey")
+	canvas.draw_image(img_buttonRestaurant, (250/2, 40/2), (250, 40), (TYCOON_POINTS[0][0] + 295, TYCOON_POINTS[0][1] + 100), (170, 40))
 	canvas.draw_text("Upgrade Restaurant - " + str(pizza_price), (TYCOON_POINTS[1][0] - GUI_SQUARE_SIZE/2 + 10, TYCOON_POINTS[1][1] + 120), 12, "White")
 	
-	canvas.draw_polygon([(TYCOON_POINTS[1][0] - GUI_SQUARE_SIZE/2 + 10, TYCOON_POINTS[1][1] + 140), (TYCOON_POINTS[1][0] - 20, TYCOON_POINTS[1][1] + 140), (TYCOON_POINTS[1][0] - 20, TYCOON_POINTS[1][1] + 180), (TYCOON_POINTS[1][0] - GUI_SQUARE_SIZE/2 + 10, TYCOON_POINTS[1][1] + 180)], 1, "Grey", "Grey")
-	canvas.draw_polygon([(TYCOON_POINTS[1][0] - GUI_SQUARE_SIZE/2 + 10, TYCOON_POINTS[1][1] + 200), (TYCOON_POINTS[1][0] - 20, TYCOON_POINTS[1][1] + 200), (TYCOON_POINTS[1][0] - 20, TYCOON_POINTS[1][1] + 240), (TYCOON_POINTS[1][0] - GUI_SQUARE_SIZE/2 + 10, TYCOON_POINTS[1][1] + 240)], 1, "Grey", "Grey")
-	canvas.draw_polygon([(TYCOON_POINTS[1][0] - GUI_SQUARE_SIZE/2 + 10, TYCOON_POINTS[1][1] + 260), (TYCOON_POINTS[1][0] - 20, TYCOON_POINTS[1][1] + 260), (TYCOON_POINTS[1][0] - 20, TYCOON_POINTS[1][1] + 300), (TYCOON_POINTS[1][0] - GUI_SQUARE_SIZE/2 + 10, TYCOON_POINTS[1][1] + 300)], 1, "Grey", "Grey")
-	canvas.draw_polygon([(TYCOON_POINTS[1][0] - GUI_SQUARE_SIZE/2 + 10, TYCOON_POINTS[1][1] + 320), (TYCOON_POINTS[1][0] - 20, TYCOON_POINTS[1][1] + 320), (TYCOON_POINTS[1][0] - 20, TYCOON_POINTS[1][1] + 360), (TYCOON_POINTS[1][0] - GUI_SQUARE_SIZE/2 + 10, TYCOON_POINTS[1][1] + 360)], 1, "Grey", "Grey")
+	canvas.draw_image(img_buttonEvil, (250/2, 40/2), (250, 40), (TYCOON_POINTS[0][0] + 295, TYCOON_POINTS[0][1] + 160), (170, 40))
+	canvas.draw_image(img_buttonEvil, (250/2, 40/2), (250, 40), (TYCOON_POINTS[0][0] + 295, TYCOON_POINTS[0][1] + 220), (170, 40))
+	canvas.draw_image(img_buttonEvil, (250/2, 40/2), (250, 40), (TYCOON_POINTS[0][0] + 295, TYCOON_POINTS[0][1] + 280), (170, 40))
+	canvas.draw_image(img_buttonEvil, (250/2, 40/2), (250, 40), (TYCOON_POINTS[0][0] + 295, TYCOON_POINTS[0][1] + 340), (170, 40))
 	
 	# Pizzatron code
 	if flag_business == True:
@@ -291,17 +303,27 @@ def draw(canvas):
 	canvas.draw_polygon(TYCOON_POINTS, GUI_WIDTH, GUI_COLOR)
 	canvas.draw_polygon(PIZZA_POINTS, GUI_WIDTH, GUI_COLOR)
 	
-	canvas.draw_text("CRIME", TYCOON_POINTS[0], 16, "White")
-	canvas.draw_text("BUSINESS", (PIZZA_POINTS[1][0] - frame.get_canvas_textwidth("BUSINESS", 16), PIZZA_POINTS[1][1]), 16, "White")
+	canvas.draw_image(img_labelCrime, (188/2, 28/2), (188, 28), (TYCOON_POINTS[0][0] + 188/2, TYCOON_POINTS[0][1] - 28/2), (188, 28))
+	canvas.draw_image(img_labelBusiness, (188/2, 28/2), (188, 28), (PIZZA_POINTS[1][0] - 70, PIZZA_POINTS[1][1] - 28/2), (188, 28))
 	
-	canvas.draw_text("Dough: " + str(money), (10, 40), 20, "White")
-	tempgoon = "Goons: " + str(goons)
-	canvas.draw_text(tempgoon, (FWIDTH - frame.get_canvas_textwidth(tempgoon, 20) - 10, 40), 20, "White")
+	canvas.draw_image(img_labelDough, (250/2, 150/2), (250, 150), (250*0.3, 150*0.3), (250*0.6, 150*0.6))
+	canvas.draw_polygon([(137, 22), (151 + frame.get_canvas_textwidth(str(money), 24), 22), (151 + frame.get_canvas_textwidth(str(money), 24), 66), (137, 66)], 1, "Black", "Black")
+	canvas.draw_polygon([(141, 26), (147 + frame.get_canvas_textwidth(str(money), 24), 26), (147 + frame.get_canvas_textwidth(str(money), 24), 62), (141, 62)], 1, "White", "White")
+	canvas.draw_text(str(money), (144, 62), 24, "Black")
+	
+	canvas.draw_image(img_labelGoons, (250/2, 150/2), (250, 150), (FWIDTH - 250*0.3, 150*0.3), (250*0.6, 150*0.6))
+	canvas.draw_polygon([(FWIDTH - frame.get_canvas_textwidth(goons, 24) - 170, 22), (FWIDTH - 156, 22), (FWIDTH - 156, 66), (FWIDTH - frame.get_canvas_textwidth(goons, 24) - 170, 66)], 1, "Black", "Black")
+	canvas.draw_polygon([(FWIDTH - frame.get_canvas_textwidth(goons, 24) - 166, 26), (FWIDTH - 160, 26), (FWIDTH - 160, 62), (FWIDTH - frame.get_canvas_textwidth(goons, 24) - 166, 62)], 1, "White", "White")
+	canvas.draw_text(str(goons), (FWIDTH - frame.get_canvas_textwidth(goons, 24) - 163, 62), 24, "Black")
+	
+	canvas.draw_text("Pizza Earnings: $" + str(pizza_multiplier * PIZZA_BASE_REWARD) + "/P", (10, 120), 16, "White")
+	
 	tempeff = "Goon Efficiency: $" + str(goon_efficiency) + "/s"
-	canvas.draw_text(tempeff, (FWIDTH - frame.get_canvas_textwidth(tempeff, 16) - 10, 60), 16, "White")
+	canvas.draw_text(tempeff, (FWIDTH - frame.get_canvas_textwidth(tempeff, 16) - 10, 120), 16, "White")
 
 # Game frame setup
 frame = simplegui.create_frame("The Big Cheese", FWIDTH, FHEIGHT)
+frame.set_canvas_background(BACKGROUND_COLOR)
 frame.set_mouseclick_handler(m_click)
 frame.set_draw_handler(draw)
 
