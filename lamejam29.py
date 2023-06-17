@@ -70,6 +70,8 @@ dummy_list = [0, 1, 2, 3, 4, 5]
 # Graphic resources
 print("Loading graphic resources...")
 img_logo = simplegui.load_image("https://i.imgur.com/XfUa7qn.png")
+img_labelDough = simplegui.load_image("https://i.imgur.com/6bhPqYx.png")
+img_labelGoons = simplegui.load_image("https://i.imgur.com/05i317b.png")
 img_labelCrime = simplegui.load_image("https://i.imgur.com/Q2KlutF.png")
 img_labelBusiness = simplegui.load_image("https://i.imgur.com/hxIpu4B.png")
 img_buttonGoon = simplegui.load_image("https://i.imgur.com/sjOPe4h.png")
@@ -78,6 +80,12 @@ img_buttonEvil = simplegui.load_image("https://i.imgur.com/P6MhUa2.png")
 img_bannerBase = simplegui.load_image("https://i.imgur.com/RcG2EdD.png")
 img_animSmoke1 = simplegui.load_image("https://i.imgur.com/oyRaeNc.png")
 img_animSmoke2 = simplegui.load_image("https://i.imgur.com/ugknTYL.png")
+img_iconCheese = simplegui.load_image("https://i.imgur.com/905s2A2.png")
+img_iconPepp = simplegui.load_image("https://i.imgur.com/7lAReNE.png")
+img_iconMush = simplegui.load_image("https://i.imgur.com/sLMn507.png")
+img_iconOlive = simplegui.load_image("https://i.imgur.com/oPJ652R.png")
+img_iconBacon = simplegui.load_image("https://i.imgur.com/Rh1Whqc.png")
+img_iconBanana = simplegui.load_image("https://i.imgur.com/mcOafIh.png")
 
 print("Done.")
 
