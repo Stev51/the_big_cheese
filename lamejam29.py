@@ -38,15 +38,14 @@ PHC = (GUI_SQUARE_SIZE / 2) + PH0
 
 STARTING_MONEY = 10
 INCOME_TIME = 60
-GOON_MILESTONES = [10, 50, 100]
+GOON_MILESTONES = [1, 10, 25]
 
-GOON_INCREASE = 10
-GEFF_INCREASE = 10
-PIZZA_INCREASE = 1
+GOON_INCREASE = 1.1
+GEFF_INCREASE = 2
+PIZZA_INCREASE = 1.1
 
 BREAK_TIME = 60
-ORDER_TIME = 119 #changing this to 2sec bc lag :)))))) you can change it back if you think it runs good enough on ur end - LB
-PIZZA_BASE_REWARD = 15
+ORDER_TIME = 119
 
 # Normal variables
 timerIncome = 0
@@ -57,13 +56,13 @@ flags_office = [False, False, False, False, False, False, False, False]
 money = STARTING_MONEY
 goons = 0
 goon_efficiency = 1
-pizza_multiplier = 1
+pizza_multiplier = 15
 
 goon_price = 10
-geff_price = 15
-business_price = 10
+geff_price = 50
+business_price = 50
 pizza_price = 1
-office_prices = [1, 1, 1, 1, 1, 1, 1, 1]
+office_prices = [10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000]
 
 pizza_gamestate = 0
 score = 0
@@ -151,14 +150,14 @@ def buy_goon():
 	if money >= goon_price:
 		money -= goon_price
 		goons += 1
-		goon_price += GOON_INCREASE
+		goon_price = int(round(goon_price * GOON_INCREASE))
 
 def buy_goon_efficiency():
 	global money, goon_efficiency, geff_price
 	if money >= geff_price:
 		money -= geff_price
 		goon_efficiency += 1
-		geff_price += GEFF_INCREASE
+		geff_price = int(round(geff_price * GEFF_INCREASE))
 
 def buy_business():
 	global money, flag_business
@@ -171,8 +170,7 @@ def buy_pizza_efficiency():
 	global goons, pizza_multiplier, pizza_price
 	if goons >= pizza_price:
 		goons -= pizza_price
-		pizza_multiplier += 1
-		pizza_price += PIZZA_INCREASE
+		pizza_multiplier = int(round(pizza_multiplier * PIZZA_INCREASE))
 
 def buy_office(index):
 	global money, flags_office
@@ -194,7 +192,7 @@ def bell_reset():
 		score = 0
 	else:
 		score = score / 3
-		score = score * PIZZA_BASE_REWARD * pizza_multiplier
+		score = score * pizza_multiplier
 	money += int(score)
 	
 	pizza_gamestate = 0
@@ -469,7 +467,7 @@ def draw(canvas):
 	canvas.draw_polygon([(954 - frame.get_canvas_textwidth(goons, 24), 26), (960, 26), (960, 62), (954 - frame.get_canvas_textwidth(goons, 24), 62)], 1, "White", "White")
 	canvas.draw_text(str(goons), (957 - frame.get_canvas_textwidth(goons, 24), 62), 24, "Black")
 	
-	canvas.draw_text("Pizza Earnings: $" + str(pizza_multiplier * PIZZA_BASE_REWARD) + "/P", (10, 120), 16, "White")
+	canvas.draw_text("Pizza Earnings: $" + str(pizza_multiplier) + "/P", (10, 120), 16, "White")
 	
 	tempeff = "Goon Efficiency: $" + str(goon_efficiency) + "/s"
 	canvas.draw_text(tempeff, (1110 - frame.get_canvas_textwidth(tempeff, 16), 120), 16, "White")
