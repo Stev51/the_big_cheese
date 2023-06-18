@@ -44,8 +44,8 @@ GOON_INCREASE = 10
 GEFF_INCREASE = 10
 PIZZA_INCREASE = 1
 
-BREAK_TIME = 120
-ORDER_TIME = 299
+BREAK_TIME = 60
+ORDER_TIME = 179
 PIZZA_BASE_REWARD = 15
 
 # Normal variables
@@ -179,7 +179,6 @@ def buy_office(index):
 	if flags_office[index] == False and money >= office_prices[index]:
 		money -= office_prices[index]
 		flags_office[index] = True
-		print(str(flags_office)) #<-- TEMPORARY
 
 # Pizza game bell method
 def bell_reset():
