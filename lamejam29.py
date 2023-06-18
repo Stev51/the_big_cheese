@@ -102,6 +102,7 @@ img_customer3 = simplegui.load_image("https://i.imgur.com/xFRr8Ak.png")
 img_customer4 = simplegui.load_image("https://i.imgur.com/Wt3cPj9.png")
 img_customer5 = simplegui.load_image("https://i.imgur.com/jGr5cV6.png")
 img_customer6 = simplegui.load_image("https://i.imgur.com/LI2D8wF.png")
+img_customer7 = simplegui.load_image("https://i.imgur.com/7ACuH64.png")
 img_bannerBase = simplegui.load_image("https://i.imgur.com/RcG2EdD.png")
 img_animSmoke1 = simplegui.load_image("https://i.imgur.com/oyRaeNc.png")
 img_animSmoke2 = simplegui.load_image("https://i.imgur.com/ugknTYL.png")
@@ -187,7 +188,10 @@ def bell_reset():
 		ordered_pizza[i] = 1
 		display_pizza.append(img_topping_list[i])
 	
-	current_customer = img_customer_list[random.randint(0, 5)]
+	if random.randint(1, 100) == 1:
+		current_customer = img_customer7
+	else:
+		current_customer = img_customer_list[random.randint(0, 5)]
 
 # Mouse handler
 def m_click(pos):
