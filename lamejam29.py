@@ -103,6 +103,7 @@ img_customer4 = simplegui.load_image("https://i.imgur.com/Wt3cPj9.png")
 img_customer5 = simplegui.load_image("https://i.imgur.com/jGr5cV6.png")
 img_customer6 = simplegui.load_image("https://i.imgur.com/LI2D8wF.png")
 img_customer7 = simplegui.load_image("https://i.imgur.com/7ACuH64.png")
+img_customer8 = simplegui.load_image("https://i.imgur.com/1KTaojl.png")
 img_bannerBase = simplegui.load_image("https://i.imgur.com/RcG2EdD.png")
 img_animSmoke1 = simplegui.load_image("https://i.imgur.com/oyRaeNc.png")
 img_animSmoke2 = simplegui.load_image("https://i.imgur.com/ugknTYL.png")
@@ -189,7 +190,10 @@ def bell_reset():
 		display_pizza.append(img_topping_list[i])
 	
 	if random.randint(1, 100) == 1:
-		current_customer = img_customer7
+		if random.randint(1, 2) == 1:
+			current_customer = img_customer7
+		else:
+			current_customer = img_customer8
 	else:
 		current_customer = img_customer_list[random.randint(0, 5)]
 
@@ -319,12 +323,6 @@ def draw(canvas):
 		canvas.draw_image(img_iconBacon, (50, 50), (100, 100), (755, 558), (50, 50))
 		canvas.draw_image(img_iconBanana, (50, 50), (100, 100), (825, 558), (50, 50))
 		
-		# Bell
-		if pizza_gamestate == 1:
-			canvas.draw_image(img_bell2, (25, 25), (50, 50), (685, 418), (50, 50))
-		else:
-			canvas.draw_image(img_bell1, (25, 25), (50, 50), (685, 418), (50, 50))
-		
 		# Order display
 		if pizza_gamestate == 1:
 			canvas.draw_image(current_customer, (100, 100), (200, 200), (770, 310), (200, 200))
@@ -338,6 +336,12 @@ def draw(canvas):
 				canvas.draw_text(str(math.floor(timer_order/60)+1), (937, 297), 20, "Black")
 				for i in range(len(display_pizza)):
 					canvas.draw_image(display_pizza[i], (50, 50), (100, 100), (885 + (50 * i), 245), (50, 50))
+		
+		# Bell
+		if pizza_gamestate == 1:
+			canvas.draw_image(img_bell2, (25, 25), (50, 50), (685, 418), (50, 50))
+		else:
+			canvas.draw_image(img_bell1, (25, 25), (50, 50), (685, 418), (50, 50))
 		
 		# Final result display
 		if pizza_gamestate == 0:
