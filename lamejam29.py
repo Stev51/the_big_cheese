@@ -38,6 +38,7 @@ PHC = (GUI_SQUARE_SIZE / 2) + PH0
 
 STARTING_MONEY = 10
 INCOME_TIME = 60
+GOON_MILESTONES = [10, 50, 100]
 
 GOON_INCREASE = 10
 GEFF_INCREASE = 10
@@ -68,7 +69,9 @@ timer_break = BREAK_TIME
 timer_order = ORDER_TIME
 ordered_pizza = [0, 0, 0, 0, 0, 0]
 player_pizza = [0, 0, 0, 0, 0, 0]
+display_pizza = []
 dummy_list = [0, 1, 2, 3, 4, 5]
+topping_pos_list = [(783, 405), (815, 405), (845, 405), (780, 435), (825, 440), (870, 435)]
 
 # Graphic resources
 print("Loading graphic resources...")
@@ -79,9 +82,12 @@ img_labelCrime = simplegui.load_image("https://i.imgur.com/Q2KlutF.png")
 img_labelBusiness = simplegui.load_image("https://i.imgur.com/hxIpu4B.png")
 img_sign = simplegui.load_image("https://i.imgur.com/xczaKmo.png")
 img_buttonGoon = simplegui.load_image("https://i.imgur.com/sjOPe4h.png")
-img_buttonRestaurant = simplegui.load_image("https://i.imgur.com/NmhRRrx.png")
+img_buttonRestaurant = simplegui.load_image("https://i.imgur.com/TDNudeX.png")
 img_buttonEvil = simplegui.load_image("https://i.imgur.com/P6MhUa2.png")
 img_pizzaBase = simplegui.load_image("https://i.imgur.com/PtfNkX6.png")
+img_pizzaPizza = simplegui.load_image("https://i.imgur.com/Wp2mL9c.png")
+img_speechBubble = simplegui.load_image("https://i.imgur.com/eXcEybV.png")
+img_timer = simplegui.load_image("https://i.imgur.com/KuPIKeG.png")
 img_iconCheese = simplegui.load_image("https://i.imgur.com/905s2A2.png")
 img_iconPepp = simplegui.load_image("https://i.imgur.com/7lAReNE.png")
 img_iconMush = simplegui.load_image("https://i.imgur.com/sLMn507.png")
@@ -90,14 +96,22 @@ img_iconBacon = simplegui.load_image("https://i.imgur.com/Rh1Whqc.png")
 img_iconBanana = simplegui.load_image("https://i.imgur.com/mcOafIh.png")
 img_bell1 = simplegui.load_image("https://i.imgur.com/9V4WWAE.png")
 img_bell2 = simplegui.load_image("https://i.imgur.com/jhqd84B.png")
+img_customer1 = simplegui.load_image("https://i.imgur.com/67T3N4i.png")
+img_customer2 = simplegui.load_image("https://i.imgur.com/tZICPeJ.png")
+img_customer3 = simplegui.load_image("https://i.imgur.com/xFRr8Ak.png")
+img_customer4 = simplegui.load_image("https://i.imgur.com/Wt3cPj9.png")
+img_customer5 = simplegui.load_image("https://i.imgur.com/jGr5cV6.png")
+img_customer6 = simplegui.load_image("https://i.imgur.com/LI2D8wF.png")
 img_bannerBase = simplegui.load_image("https://i.imgur.com/RcG2EdD.png")
 img_animSmoke1 = simplegui.load_image("https://i.imgur.com/oyRaeNc.png")
 img_animSmoke2 = simplegui.load_image("https://i.imgur.com/ugknTYL.png")
 img_goon1 = simplegui.load_image("https://i.imgur.com/6s1MP1Y.png")
 img_goon2 = simplegui.load_image("https://i.imgur.com/s6Dk0TO.png")
 img_goon3 = simplegui.load_image("https://i.imgur.com/2f9e988.png")
-
 print("Done.")
+img_topping_list = [img_iconCheese, img_iconPepp, img_iconMush, img_iconOlive, img_iconBacon, img_iconBanana]
+img_customer_list = [img_customer1, img_customer2, img_customer3, img_customer4, img_customer5, img_customer6]
+current_customer = img_customer1
 
 # Audio resources
 print("Loading sound resources...")
@@ -140,14 +154,14 @@ def buy_business():
 
 def buy_pizza_efficiency():
 	global goons, pizza_multiplier, pizza_price
-	if goons > pizza_price:
+	if goons >= pizza_price:
 		goons -= pizza_price
 		pizza_multiplier += 1
 		pizza_price += PIZZA_INCREASE
 
 # Pizza game bell method
 def bell_reset():
-	global pizza_gamestate, timer_break, player_pizza, ordered_pizza, toppings, score, money
+	global pizza_gamestate, timer_break, player_pizza, ordered_pizza, toppings, score, money, current_customer
 	
 	score = 0
 	for i in range(len(player_pizza)):
@@ -167,23 +181,27 @@ def bell_reset():
 	player_pizza = [0, 0, 0, 0, 0, 0]
 	ordered_pizza = [0, 0, 0, 0, 0, 0]
 	
+	display_pizza.clear()
 	toppings = random.sample(dummy_list, 3)
 	for i in toppings:
 		ordered_pizza[i] = 1
+		display_pizza.append(img_topping_list[i])
+	
+	current_customer = img_customer_list[random.randint(0, 5)]
 
 # Mouse handler
 def m_click(pos):
 	global player_pizza
 	
-	if pos[0] >= TYCOON_POINTS[0][0] + 20 and pos[0] <= TYCOON_POINTS[0][0] + GUI_SQUARE_SIZE/2 - 10:
-		if pos[1] >= TYCOON_POINTS[0][1] + 20 and pos[1] <= TYCOON_POINTS[0][1] + 60:
+	if pos[0] >= 100 and pos[0] <= 270:
+		if pos[1] >= 223 and pos[1] <= 263:
 			buy_goon()
-		elif pos[1] >= TYCOON_POINTS[0][1] + 80 and pos[1] <= TYCOON_POINTS[0][1] + 120:
+		elif pos[1] >= 283 and pos[1] <= 323:
 			buy_goon_efficiency()
-	elif pos[0] >= TYCOON_POINTS[1][0] - GUI_SQUARE_SIZE/2 + 10 and pos[0] <= TYCOON_POINTS[1][0] - 20:
-		if pos[1] >= TYCOON_POINTS[1][1] + 20 and pos[1] <= TYCOON_POINTS[1][1] + 60:
+	elif pos[0] >= 290 and pos[0] <= 460:
+		if pos[1] >= 223 and pos[1] <= 263:
 			buy_business()
-		elif pos[1] >= TYCOON_POINTS[1][1] + 80 and pos[1] <= TYCOON_POINTS[1][1] + 120:
+		elif pos[1] >= 283 and pos[1] <= 323:
 			buy_pizza_efficiency()
 	
 	if flag_business == True:
@@ -208,7 +226,7 @@ def m_click(pos):
 
 # Draw handler
 def draw(canvas):
-	global money, timerIncome, pizza_gamestate, timer_break, timer_order
+	global money, timerIncome, pizza_gamestate, timer_break, timer_order, display_pizza, current_customer
 	
 	# Manage money/income
 	timerIncome += 1
@@ -224,14 +242,23 @@ def draw(canvas):
 	else:
 		canvas.draw_image(img_animSmoke2, (42.5, 42.5), (85, 85), (500, 90), (85, 85))
 	
+	if goons >= GOON_MILESTONES[0]:
+		canvas.draw_image(img_goon1, (52.5, 37.5), (105, 75), (410, 138), (105, 75))
+	if goons >= GOON_MILESTONES[1]:
+		canvas.draw_image(img_goon2, (52.5, 37.5), (105, 75), (710, 138), (105, 75))
+	if goons >= GOON_MILESTONES[2]:
+		canvas.draw_image(img_goon3, (116.5, 62.5), (233, 125), (1000, 113), (233, 125))
+	
 	# Tycoon GUI
 	canvas.draw_polygon(TYCOON_POINTS, 1, SQUARE_COLOR, SQUARE_COLOR)
 	
 	canvas.draw_image(img_buttonGoon, (125, 20), (250, 40), (185, 243), (170, 40))
-	canvas.draw_text("Buy Goon - " + str(goon_price), (100, 263), 12, "White")
+	canvas.draw_text("Buy Goon", (185 - (frame.get_canvas_textwidth("Buy Goon", 12) / 2), 245), 12, "White")
+	canvas.draw_text("$" + str(goon_price), (185 - (frame.get_canvas_textwidth("$" + str(goon_price), 12) / 2), 260), 12, "White")
 	
 	canvas.draw_image(img_buttonGoon, (125, 20), (250, 40), (185, 303), (170, 40))
-	canvas.draw_text("Upgrade Goons - " + str(geff_price), (100, 323), 12, "White")
+	canvas.draw_text("Upgrade Goon Efficiency", (185 - (frame.get_canvas_textwidth("Upgrade Goon Efficiency", 11) / 2), 305), 11, "White")
+	canvas.draw_text("$" + str(geff_price), (185 - (frame.get_canvas_textwidth("$" + str(geff_price), 12) / 2), 320), 12, "White")
 	
 	canvas.draw_image(img_buttonEvil, (125, 20), (250, 40), (185, 363), (170, 40))
 	canvas.draw_image(img_buttonEvil, (125, 20), (250, 40), (185, 423), (170, 40))
@@ -240,12 +267,13 @@ def draw(canvas):
 	
 	canvas.draw_image(img_buttonRestaurant, (125, 20), (250, 40), (375, 243), (170, 40))
 	if flag_business == False:
-		canvas.draw_text("Purchase Legitimate Business - " + str(business_price), (290, 263), 12, "White")
+		canvas.draw_text("Buy Legitimate Business", (375 - (frame.get_canvas_textwidth("Buy Legitimate Business", 11) / 2), 253), 11, "White")
 	else:
-		canvas.draw_text("---", (290, 263), 12, "White")
+		canvas.draw_text("Purchased!", (375 - (frame.get_canvas_textwidth("Purchased!", 12) / 2), 253), 12, "White")
 	
 	canvas.draw_image(img_buttonRestaurant, (125, 20), (250, 40), (375, 303), (170, 40))
-	canvas.draw_text("Upgrade Restaurant - " + str(pizza_price), (290, 323), 12, "White")
+	canvas.draw_text("Upgrade Restaurant Earnings", (375 - (frame.get_canvas_textwidth("Upgrade Restaurant Earnings", 10) / 2), 305), 10, "White")
+	canvas.draw_text(str(pizza_price) + " Goons", (375 - (frame.get_canvas_textwidth(str(pizza_price) + " Goons", 12) / 2), 320), 12, "White")
 	
 	canvas.draw_image(img_buttonEvil, (125, 20), (250, 40), (375, 363), (170, 40))
 	canvas.draw_image(img_buttonEvil, (125, 20), (250, 40), (375, 423), (170, 40))
@@ -280,14 +308,12 @@ def draw(canvas):
 		canvas.draw_polygon([(800, 533), (850, 533), (850, 583), (800, 583)], 1, BUTTON_COLOR, BUTTON_COLOR)
 		
 		# Pizza button labels
-		# Also temp pizza contents
 		canvas.draw_image(img_iconCheese, (50, 50), (100, 100), (685, 488), (50, 50))
 		canvas.draw_image(img_iconPepp, (50, 50), (100, 100), (755, 488), (50, 50))
 		canvas.draw_image(img_iconMush, (50, 50), (100, 100), (825, 488), (50, 50))
 		canvas.draw_image(img_iconOlive, (50, 50), (100, 100), (685, 558), (50, 50))
 		canvas.draw_image(img_iconBacon, (50, 50), (100, 100), (755, 558), (50, 50))
 		canvas.draw_image(img_iconBanana, (50, 50), (100, 100), (825, 558), (50, 50))
-		canvas.draw_text(str(player_pizza), (650, 323), 20, "White") #<-- Temporary
 		
 		# Bell
 		if pizza_gamestate == 1:
@@ -296,13 +322,23 @@ def draw(canvas):
 			canvas.draw_image(img_bell1, (25, 25), (50, 50), (685, 418), (50, 50))
 		
 		# Order display
-		if pizza_gamestate == 1 and timer_order > 0:
-			canvas.draw_text(str(math.floor(timer_order/60)+1), (650, 243), 20, "White")
-			canvas.draw_text(str(ordered_pizza), (650, 283), 20, "White")
+		if pizza_gamestate == 1:
+			canvas.draw_image(current_customer, (100, 100), (200, 200), (770, 310), (200, 200))
+			canvas.draw_image(img_pizzaPizza, (100, 50), (200, 100), (820, 420), (160, 80))
+			for i in range(len(player_pizza)):
+				if player_pizza[i] == 1:
+					canvas.draw_image(img_topping_list[i], (50, 50), (100, 100), topping_pos_list[i], (50, 50))
+			if timer_order > 0:
+				canvas.draw_image(img_speechBubble, (100, 50), (200, 100), (950, 270), (250, 125))
+				canvas.draw_image(img_timer, (25, 25), (50, 50), (920, 280), (25, 25))
+				canvas.draw_text(str(math.floor(timer_order/60)+1), (937, 297), 20, "Black")
+				for i in range(len(display_pizza)):
+					canvas.draw_image(display_pizza[i], (50, 50), (100, 100), (885 + (50 * i), 245), (50, 50))
 		
 		# Final result display
 		if pizza_gamestate == 0:
-			canvas.draw_text("You earned $" + str(round(score)) + "!", (650, 283), 20, "White")
+			temptext = "+ $" + str(round(score))
+			canvas.draw_text(temptext, (840 - (frame.get_canvas_textwidth(temptext, 44) / 2), 335), 44, "Lime")
 	
 	else:
 		canvas.draw_image(img_sign, (100, 100), (200, 200), (PWC, PHC), (200, 200))
