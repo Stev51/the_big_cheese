@@ -81,6 +81,7 @@ img_labelGoons = simplegui.load_image("https://i.imgur.com/05i317b.png")
 img_labelCrime = simplegui.load_image("https://i.imgur.com/Q2KlutF.png")
 img_labelBusiness = simplegui.load_image("https://i.imgur.com/hxIpu4B.png")
 img_sign = simplegui.load_image("https://i.imgur.com/xczaKmo.png")
+img_buttonEnding = simplegui.load_image("https://i.imgur.com/GnxAKOS.png")
 img_buttonGoon = simplegui.load_image("https://i.imgur.com/sjOPe4h.png")
 img_buttonRestaurant = simplegui.load_image("https://i.imgur.com/TDNudeX.png")
 img_buttonEvil = simplegui.load_image("https://i.imgur.com/P6MhUa2.png")
@@ -197,6 +198,10 @@ def bell_reset():
 	else:
 		current_customer = img_customer_list[random.randint(0, 5)]
 
+# Ending button method
+def end_logic():
+	print("BIG RED BUTTON PRESSED!")
+
 # Mouse handler
 def m_click(pos):
 	global player_pizza
@@ -206,31 +211,49 @@ def m_click(pos):
 			buy_goon()
 		elif pos[1] >= 283 and pos[1] <= 323:
 			buy_goon_efficiency()
+		elif pos[1] >= 343 and pos[1] <= 383:
+			pass
+		elif pos[1] >= 403 and pos[1] <= 443:
+			pass
+		elif pos[1] >= 463 and pos[1] <= 503:
+			pass
+		elif pos[1] >= 523 and pos[1] <= 563:
+			pass
 	elif pos[0] >= 290 and pos[0] <= 460:
 		if pos[1] >= 223 and pos[1] <= 263:
 			buy_business()
 		elif pos[1] >= 283 and pos[1] <= 323:
 			buy_pizza_efficiency()
+		elif pos[1] >= 343 and pos[1] <= 383:
+			pass
+		elif pos[1] >= 403 and pos[1] <= 443:
+			pass
+		elif pos[1] >= 463 and pos[1] <= 503:
+			pass
+		elif pos[1] >= 523 and pos[1] <= 563:
+			pass
 	
-	if flag_business == True:
-		if pizza_gamestate == 1:
-			if pos[1] >= PH1 - 140 and pos[1] <= PH1 - 90:
-				if pos[0] >= PW0 + 20 and pos[0] <= PW0 + 70:
-					player_pizza[0] = 1
-				elif pos[0] >= PW0 + 90 and pos[0] <= PW0 + 140:
-					player_pizza[1] = 1
-				elif pos[0] >= PW0 + 160 and pos[0] <= PW0 + 210:
-					player_pizza[2] = 1
-			elif pos[1] >= PH1 - 70 and pos[1] <= PH1 - 20:
-				if pos[0] >= PW0 + 20 and pos[0] <= PW0 + 70:
-					player_pizza[3] = 1
-				elif pos[0] >= PW0 + 90 and pos[0] <= PW0 + 140:
-					player_pizza[4] = 1
-				elif pos[0] >= PW0 + 160 and pos[0] <= PW0 + 210:
-					player_pizza[5] = 1
-			elif (pos[0] >= PW0 + 20 and pos[0] <= PW0 + 70) and (pos[1] >= PH1 - 210 and pos[1] <= PH1 - 160):
-				if pizza_gamestate == 1:
-					bell_reset()
+	elif (pos[0] >= 510 and pos[0] <= 610) and (pos[1] >= 352 and pos[1] <= 452):
+		end_logic()
+	
+	elif flag_business == True and pizza_gamestate == 1:
+		if pos[1] >= PH1 - 140 and pos[1] <= PH1 - 90:
+			if pos[0] >= PW0 + 20 and pos[0] <= PW0 + 70:
+				player_pizza[0] = 1
+			elif pos[0] >= PW0 + 90 and pos[0] <= PW0 + 140:
+				player_pizza[1] = 1
+			elif pos[0] >= PW0 + 160 and pos[0] <= PW0 + 210:
+				player_pizza[2] = 1
+		elif pos[1] >= PH1 - 70 and pos[1] <= PH1 - 20:
+			if pos[0] >= PW0 + 20 and pos[0] <= PW0 + 70:
+				player_pizza[3] = 1
+			elif pos[0] >= PW0 + 90 and pos[0] <= PW0 + 140:
+				player_pizza[4] = 1
+			elif pos[0] >= PW0 + 160 and pos[0] <= PW0 + 210:
+				player_pizza[5] = 1
+		elif (pos[0] >= PW0 + 20 and pos[0] <= PW0 + 70) and (pos[1] >= PH1 - 210 and pos[1] <= PH1 - 160):
+			if pizza_gamestate == 1:
+				bell_reset()
 
 # Draw handler
 def draw(canvas):
@@ -375,6 +398,8 @@ def draw(canvas):
 	
 	tempeff = "Goon Efficiency: $" + str(goon_efficiency) + "/s"
 	canvas.draw_text(tempeff, (1110 - frame.get_canvas_textwidth(tempeff, 16), 120), 16, "White")
+	
+	canvas.draw_image(img_buttonEnding, (50, 50), (100, 100), (FWC, 402), (100, 100))
 
 # Game frame setup
 frame = simplegui.create_frame("The Big Cheese", FWIDTH, FHEIGHT)
