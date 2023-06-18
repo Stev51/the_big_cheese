@@ -52,6 +52,7 @@ PIZZA_BASE_REWARD = 15
 timerIncome = 0
 flag_business = False
 flag_mute = True
+flags_office = [False, False, False, False, False, False, False, False]
 
 money = STARTING_MONEY
 goons = 0
@@ -62,6 +63,7 @@ goon_price = 10
 geff_price = 15
 business_price = 10
 pizza_price = 1
+office_prices = [1, 1, 1, 1, 1, 1, 1, 1]
 
 pizza_gamestate = 0
 score = 0
@@ -111,10 +113,20 @@ img_animSmoke2 = simplegui.load_image("https://i.imgur.com/ugknTYL.png")
 img_goon1 = simplegui.load_image("https://i.imgur.com/6s1MP1Y.png")
 img_goon2 = simplegui.load_image("https://i.imgur.com/s6Dk0TO.png")
 img_goon3 = simplegui.load_image("https://i.imgur.com/2f9e988.png")
+img_office1 = simplegui.load_image("https://i.imgur.com/xVXFChI.png")
+img_office2 = simplegui.load_image("https://i.imgur.com/PoY2dij.png")
+img_office3 = simplegui.load_image("https://i.imgur.com/9hGkmRT.png")
+img_office4 = simplegui.load_image("https://i.imgur.com/jvff4VL.png")
+img_office5 = simplegui.load_image("https://i.imgur.com/F4oBANt.png")
+img_office61 = simplegui.load_image("https://i.imgur.com/Fk4inzn.png")
+img_office62 = simplegui.load_image("https://i.imgur.com/u6WttVo.png")
+img_office7 = simplegui.load_image("https://i.imgur.com/OTJsUEN.png")
+img_office8 = simplegui.load_image("https://i.imgur.com/aXZlot1.png")
 print("Done.")
 img_topping_list = [img_iconCheese, img_iconPepp, img_iconMush, img_iconOlive, img_iconBacon, img_iconBanana]
 img_customer_list = [img_customer1, img_customer2, img_customer3, img_customer4, img_customer5, img_customer6]
 current_customer = img_customer1
+img_office_list = [img_office1, img_office2, img_office3, img_office4, img_office5, img_office61, img_office7, img_office8]
 
 # Audio resources
 print("Loading sound resources...")
@@ -161,6 +173,13 @@ def buy_pizza_efficiency():
 		goons -= pizza_price
 		pizza_multiplier += 1
 		pizza_price += PIZZA_INCREASE
+
+def buy_office(index):
+	global money, flags_office
+	if flags_office[index] == False and money >= office_prices[index]:
+		money -= office_prices[index]
+		flags_office[index] = True
+		print(str(flags_office)) #<-- TEMPORARY
 
 # Pizza game bell method
 def bell_reset():
@@ -212,26 +231,26 @@ def m_click(pos):
 		elif pos[1] >= 283 and pos[1] <= 323:
 			buy_goon_efficiency()
 		elif pos[1] >= 343 and pos[1] <= 383:
-			pass
+			buy_office(0)
 		elif pos[1] >= 403 and pos[1] <= 443:
-			pass
+			buy_office(1)
 		elif pos[1] >= 463 and pos[1] <= 503:
-			pass
+			buy_office(2)
 		elif pos[1] >= 523 and pos[1] <= 563:
-			pass
+			buy_office(3)
 	elif pos[0] >= 290 and pos[0] <= 460:
 		if pos[1] >= 223 and pos[1] <= 263:
 			buy_business()
 		elif pos[1] >= 283 and pos[1] <= 323:
 			buy_pizza_efficiency()
 		elif pos[1] >= 343 and pos[1] <= 383:
-			pass
+			buy_office(4)
 		elif pos[1] >= 403 and pos[1] <= 443:
-			pass
+			buy_office(5)
 		elif pos[1] >= 463 and pos[1] <= 503:
-			pass
+			buy_office(6)
 		elif pos[1] >= 523 and pos[1] <= 563:
-			pass
+			buy_office(7)
 	
 	elif (pos[0] >= 510 and pos[0] <= 610) and (pos[1] >= 352 and pos[1] <= 452):
 		end_logic()
@@ -268,17 +287,27 @@ def draw(canvas):
 	# Banner graphics
 	canvas.draw_image(img_bannerBase, (560, 87.5), (1120, 175), (FWC, 87), (1120, 175))
 	
+	for i in range(len(flags_office)):
+		if flags_office[i] == True:
+			if i != 5:
+				canvas.draw_image(img_office_list[i], (560, 87.5), (1120, 175), (FWC, 87), (1120, 175))
+			else:
+				if timerIncome >= INCOME_TIME/2:
+					canvas.draw_image(img_office61, (560, 87.5), (1120, 175), (FWC, 87), (1120, 175))
+				else:
+					canvas.draw_image(img_office62, (560, 87.5), (1120, 175), (FWC, 87), (1120, 175))
+	
 	if timerIncome >= INCOME_TIME/2:
 		canvas.draw_image(img_animSmoke1, (42.5, 42.5), (85, 85), (500, 90), (85, 85))
 	else:
 		canvas.draw_image(img_animSmoke2, (42.5, 42.5), (85, 85), (500, 90), (85, 85))
 	
 	if goons >= GOON_MILESTONES[0]:
-		canvas.draw_image(img_goon1, (52.5, 37.5), (105, 75), (410, 138), (105, 75))
+		canvas.draw_image(img_goon1, (52.5, 37.5), (105, 75), (380, 138), (105, 75))
 	if goons >= GOON_MILESTONES[1]:
-		canvas.draw_image(img_goon2, (52.5, 37.5), (105, 75), (710, 138), (105, 75))
+		canvas.draw_image(img_goon2, (52.5, 37.5), (105, 75), (830, 138), (105, 75))
 	if goons >= GOON_MILESTONES[2]:
-		canvas.draw_image(img_goon3, (116.5, 62.5), (233, 125), (1000, 113), (233, 125))
+		canvas.draw_image(img_goon3, (116.5, 62.5), (233, 125), (75, 113), (233, 125))
 	
 	# Tycoon GUI
 	canvas.draw_polygon(TYCOON_POINTS, 1, SQUARE_COLOR, SQUARE_COLOR)
@@ -292,13 +321,37 @@ def draw(canvas):
 	canvas.draw_text("$" + str(geff_price), (185 - (frame.get_canvas_textwidth("$" + str(geff_price), 12) / 2), 320), 12, "White")
 	
 	canvas.draw_image(img_buttonEvil, (125, 20), (250, 40), (185, 363), (170, 40))
+	if flags_office[0] == False:
+		canvas.draw_text("Buy Window Lasers", (185 - (frame.get_canvas_textwidth("Buy Window Lasers", 12) / 2), 365), 12, "White")
+		canvas.draw_text("$" + str(office_prices[0]), (185 - (frame.get_canvas_textwidth("$" + str(office_prices[0]), 12) / 2), 380), 12, "White")
+	else:
+		canvas.draw_text("Purchased!", (185 - (frame.get_canvas_textwidth("Purchased!", 12) / 2), 373), 12, "White")
+	
 	canvas.draw_image(img_buttonEvil, (125, 20), (250, 40), (185, 423), (170, 40))
+	if flags_office[1] == False:
+		canvas.draw_text("Buy Big Laser", (185 - (frame.get_canvas_textwidth("Buy Big Laser", 12) / 2), 425), 12, "White")
+		canvas.draw_text("$" + str(office_prices[1]), (185 - (frame.get_canvas_textwidth("$" + str(office_prices[1]), 12) / 2), 440), 12, "White")
+	else:
+		canvas.draw_text("Purchased!", (185 - (frame.get_canvas_textwidth("Purchased!", 12) / 2), 433), 12, "White")
+	
 	canvas.draw_image(img_buttonEvil, (125, 20), (250, 40), (185, 483), (170, 40))
+	if flags_office[2] == False:
+		canvas.draw_text("Buy Camera Turret", (185 - (frame.get_canvas_textwidth("Buy Camera Turret", 12) / 2), 485), 12, "White")
+		canvas.draw_text("$" + str(office_prices[2]), (185 - (frame.get_canvas_textwidth("$" + str(office_prices[2]), 12) / 2), 500), 12, "White")
+	else:
+		canvas.draw_text("Purchased!", (185 - (frame.get_canvas_textwidth("Purchased!", 12) / 2), 493), 12, "White")
+	
 	canvas.draw_image(img_buttonEvil, (125, 20), (250, 40), (185, 543), (170, 40))
+	if flags_office[3] == False:
+		canvas.draw_text("Buy Sumex Tramusel", (185 - (frame.get_canvas_textwidth("Buy Sumex Tramusel", 12) / 2), 545), 12, "White")
+		canvas.draw_text("$" + str(office_prices[3]), (185 - (frame.get_canvas_textwidth("$" + str(office_prices[3]), 12) / 2), 560), 12, "White")
+	else:
+		canvas.draw_text("Purchased!", (185 - (frame.get_canvas_textwidth("Purchased!", 12) / 2), 553), 12, "White")
 	
 	canvas.draw_image(img_buttonRestaurant, (125, 20), (250, 40), (375, 243), (170, 40))
 	if flag_business == False:
-		canvas.draw_text("Buy Legitimate Business", (375 - (frame.get_canvas_textwidth("Buy Legitimate Business", 11) / 2), 253), 11, "White")
+		canvas.draw_text("Buy Legitimate Business", (375 - (frame.get_canvas_textwidth("Buy Legitimate Business", 11) / 2), 245), 11, "White")
+		canvas.draw_text("$" + str(business_price), (375 - (frame.get_canvas_textwidth("$" + str(business_price), 12) / 2), 260), 12, "White")
 	else:
 		canvas.draw_text("Purchased!", (375 - (frame.get_canvas_textwidth("Purchased!", 12) / 2), 253), 12, "White")
 	
@@ -307,9 +360,32 @@ def draw(canvas):
 	canvas.draw_text(str(pizza_price) + " Goons", (375 - (frame.get_canvas_textwidth(str(pizza_price) + " Goons", 12) / 2), 320), 12, "White")
 	
 	canvas.draw_image(img_buttonEvil, (125, 20), (250, 40), (375, 363), (170, 40))
+	if flags_office[4] == False:
+		canvas.draw_text("Buy Cage Trap", (375 - (frame.get_canvas_textwidth("Buy Cage Trap", 12) / 2), 365), 12, "White")
+		canvas.draw_text("$" + str(office_prices[4]), (375 - (frame.get_canvas_textwidth("$" + str(office_prices[4]), 12) / 2), 380), 12, "White")
+	else:
+		canvas.draw_text("Purchased!", (375 - (frame.get_canvas_textwidth("Purchased!", 12) / 2), 373), 12, "White")
+	
 	canvas.draw_image(img_buttonEvil, (125, 20), (250, 40), (375, 423), (170, 40))
+	if flags_office[5] == False:
+		canvas.draw_text("Buy Bots", (375 - (frame.get_canvas_textwidth("Buy Bots", 12) / 2), 425), 12, "White")
+		canvas.draw_text("$" + str(office_prices[5]), (375 - (frame.get_canvas_textwidth("$" + str(office_prices[5]), 12) / 2), 440), 12, "White")
+	else:
+		canvas.draw_text("Purchased!", (375 - (frame.get_canvas_textwidth("Purchased!", 12) / 2), 433), 12, "White")
+	
 	canvas.draw_image(img_buttonEvil, (125, 20), (250, 40), (375, 483), (170, 40))
+	if flags_office[6] == False:
+		canvas.draw_text("Buy The Crusher", (375 - (frame.get_canvas_textwidth("Buy The Crusher", 12) / 2), 485), 12, "White")
+		canvas.draw_text("$" + str(office_prices[6]), (375 - (frame.get_canvas_textwidth("$" + str(office_prices[6]), 12) / 2), 500), 12, "White")
+	else:
+		canvas.draw_text("Purchased!", (375 - (frame.get_canvas_textwidth("Purchased!", 12) / 2), 493), 12, "White")
+	
 	canvas.draw_image(img_buttonEvil, (125, 20), (250, 40), (375, 543), (170, 40))
+	if flags_office[7] == False:
+		canvas.draw_text("Buy Power Gem", (375 - (frame.get_canvas_textwidth("Buy Power Gem", 12) / 2), 545), 12, "White")
+		canvas.draw_text("$" + str(office_prices[7]), (375 - (frame.get_canvas_textwidth("$" + str(office_prices[7]), 12) / 2), 560), 12, "White")
+	else:
+		canvas.draw_text("Purchased!", (375 - (frame.get_canvas_textwidth("Purchased!", 12) / 2), 553), 12, "White")
 	
 	# Pizzatron code
 	if flag_business == True:
