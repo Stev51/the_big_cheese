@@ -161,15 +161,17 @@ cutscene_images = []
 
 # Audio resources
 print("Loading sound resources...")
-#snd_bgm1 = simplegui.load_sound("")
-#snd_bgm2 = simplegui.load_sound("")
+snd_bgm1 = simplegui.load_sound("https://www.dropbox.com/s/l8mzoemusitjxy1/bgm1.mp3?dl=1")
+snd_bgm2 = simplegui.load_sound("https://www.dropbox.com/s/wp3sfp2lmu7vt9z/bgm2.mp3?dl=1")
 snd_button = simplegui.load_sound("https://www.dropbox.com/s/w76wr1i1b9i7617/place.mp3?dl=1")
 snd_bell = simplegui.load_sound("https://www.dropbox.com/s/pmzghjb23wob6nv/bell.mp3?dl=1")
 snd_laugh = simplegui.load_sound("https://www.dropbox.com/s/rysoygd76zrf3sb/laugh.mp3?dl=1")
 snd_machine = simplegui.load_sound("https://www.dropbox.com/s/2h2wuafpk6rrlst/lock.mp3?dl=1")
 snd_bigRedButton = simplegui.load_sound("https://www.dropbox.com/s/ijbfmi72xr9vorz/bigRedButton.mp3?dl=1")
+snd_fail = simplegui.load_sound("https://www.dropbox.com/s/bx3j9q9dquwypd9/fail.mp3?dl=1")
+snd_success = simplegui.load_sound("https://www.dropbox.com/s/ay0h21v5v3yc0wy/success.mp3?dl=1")
 print("Done.")
-sounds = [(snd_button, 0.5), (snd_bell, 0.5), (snd_laugh, 1), (snd_machine, 1), (snd_bigRedButton, 2)]
+sounds = [(snd_bgm1, 0.1), (snd_bgm2, 0.5), (snd_button, 0.5), (snd_bell, 0.5), (snd_laugh, 0.5), (snd_machine, 0.25), (snd_bigRedButton, 2), (snd_fail, 0.5), (snd_success, 2)]
 
 # Toggle sound method
 def mute():
@@ -301,6 +303,9 @@ def start_logic():
 	display_pizza = []
 	
 	cutscene_images = []
+	
+	snd_bgm2.pause()
+	snd_bgm2.rewind()
 
 # Ending button method
 def end_logic():
@@ -375,6 +380,8 @@ def draw(canvas):
 	
 	if flag_showGame:
 		
+		snd_bgm1.play()
+		
 		# Manage timers
 		timerIncome += 1
 		if timerIncome >= INCOME_TIME:
@@ -386,6 +393,8 @@ def draw(canvas):
 			if timerHand == 0:
 				flag_showGame = False
 				flag_showEnding = True
+				snd_bgm1.pause()
+				snd_bgm1.rewind()
 		
 		# Banner graphics
 		canvas.draw_image(img_bannerBase, (560, 87.5), (1120, 175), (FWC, 87), (1120, 175))
@@ -591,6 +600,8 @@ def draw(canvas):
 	
 	elif flag_showEnding == True:
 		
+		snd_bgm2.play()
+		
 		for img in cutscene_images:
 			canvas.draw_image(img, (560, 315), (1120, 630), (FWC, FHC), (1120, 630))
 		
@@ -617,6 +628,7 @@ def draw(canvas):
 			
 			if flags_office[0] == False and flags_office[2] == False:
 				cutscene_images.append(img_jailf)
+				snd_fail.play()
 			elif flags_office[3] == False and flags_office[5] == False:
 				cutscene_images.append(img_fail2)
 			else:
@@ -632,6 +644,7 @@ def draw(canvas):
 				flag_showCredits = True
 			elif flags_office[3] == False and flags_office[5] == False:
 				cutscene_images.append(img_jaild)
+				snd_fail.play()
 			elif flags_office[1] == False and flags_office[6] == False:
 				cutscene_images.append(img_fail2)
 			else:
@@ -647,6 +660,7 @@ def draw(canvas):
 				flag_showCredits = True
 			elif flags_office[1] == False and flags_office[6] == False:
 				cutscene_images.append(img_jailc)
+				snd_fail.play()
 			elif flags_office[4] == False:
 				cutscene_images.append(img_cont4f)
 			else:
@@ -659,10 +673,12 @@ def draw(canvas):
 				flag_showCredits = True
 			elif flags_office[4] == False:
 				cutscene_images.append(img_ded)
+				snd_fail.play()
 			elif flags_office[7] == False:
 				cutscene_images.append(img_lowpower)
 			else:
 				cutscene_images.append(img_wd)
+				snd_success.play()
 		
 		elif timerEnding >= CUTSCENE_TIME * 6:
 			
@@ -671,9 +687,13 @@ def draw(canvas):
 	
 	elif flag_showCredits == True:
 		
+		snd_bgm2.play()
+		
 		canvas.draw_image(img_credits, (560, 315), (1120, 630), (FWC, FHC), (1120, 630))
 		
 	elif flag_showTitle == True:
+		
+		snd_bgm1.play()
 		
 		canvas.draw_image(img_logo, (560, 315), (1120, 630), (FWC, FHC), (1120, 630))
 
@@ -683,7 +703,9 @@ frame.set_canvas_background(BACKGROUND_COLOR)
 frame.set_mouseclick_handler(m_click)
 frame.set_draw_handler(draw)
 
-for i in range(25):
+frame.add_button("Toggle Audio", mute)
+
+for i in range(23):
 	frame.add_label("")
 frame.add_label("↓ Ignore this stuff ↓")
 
