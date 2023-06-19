@@ -38,7 +38,7 @@ PHC = (GUI_SQUARE_SIZE / 2) + PH0
 
 STARTING_MONEY = 10
 INCOME_TIME = 60
-GOON_MILESTONES = [1, 2, 3] #[1, 10, 25]
+GOON_MILESTONES = [1, 10, 25]
 
 GOON_INCREASE = 1.1
 GEFF_INCREASE = 2
@@ -46,10 +46,13 @@ PIZZA_INCREASE = 1.1
 
 BREAK_TIME = 60
 ORDER_TIME = 119
+HAND_TIME = 60
+CUTSCENE_TIME = 240
 
 # Normal variables
 timerIncome = 0
 timerEnding = 0
+timerHand = -1
 flag_business = False
 flag_mute = True
 flags_goons = [False, False, False]
@@ -57,6 +60,8 @@ flags_office = [False, False, False, False, False, False, False, False]
 flag_showGame = False
 flag_showTitle = True
 flag_showEnding = False
+flag_showCredits = False
+flag_bigRedButton = True
 
 money = STARTING_MONEY
 goons = 0
@@ -81,13 +86,14 @@ topping_pos_list = [(783, 405), (815, 405), (845, 405), (780, 435), (825, 440), 
 
 # Graphic resources
 print("Loading graphic resources...")
-img_logo = simplegui.load_image("https://i.imgur.com/XfUa7qn.png")
+img_logo = simplegui.load_image("https://i.imgur.com/yUmcU9e.png")
+img_credits = simplegui.load_image("https://i.imgur.com/UOjcx81.png")
 img_labelDough = simplegui.load_image("https://i.imgur.com/6bhPqYx.png")
 img_labelGoons = simplegui.load_image("https://i.imgur.com/05i317b.png")
 img_labelCrime = simplegui.load_image("https://i.imgur.com/Q2KlutF.png")
 img_labelBusiness = simplegui.load_image("https://i.imgur.com/hxIpu4B.png")
 img_sign = simplegui.load_image("https://i.imgur.com/xczaKmo.png")
-img_buttonEnding = simplegui.load_image("https://i.imgur.com/GnxAKOS.png")
+img_buttonEnding = simplegui.load_image("https://i.imgur.com/K3tvQc6.png")
 img_buttonGoon = simplegui.load_image("https://i.imgur.com/sjOPe4h.png")
 img_buttonRestaurant = simplegui.load_image("https://i.imgur.com/TDNudeX.png")
 img_buttonEvil = simplegui.load_image("https://i.imgur.com/P6MhUa2.png")
@@ -111,6 +117,7 @@ img_customer5 = simplegui.load_image("https://i.imgur.com/jGr5cV6.png")
 img_customer6 = simplegui.load_image("https://i.imgur.com/LI2D8wF.png")
 img_customer7 = simplegui.load_image("https://i.imgur.com/7ACuH64.png")
 img_customer8 = simplegui.load_image("https://i.imgur.com/1KTaojl.png")
+img_customer9 = simplegui.load_image("https://i.imgur.com/AlhmPO4.png")
 img_bannerBase = simplegui.load_image("https://i.imgur.com/RcG2EdD.png")
 img_animSmoke1 = simplegui.load_image("https://i.imgur.com/oyRaeNc.png")
 img_animSmoke2 = simplegui.load_image("https://i.imgur.com/ugknTYL.png")
@@ -126,11 +133,31 @@ img_office61 = simplegui.load_image("https://i.imgur.com/Fk4inzn.png")
 img_office62 = simplegui.load_image("https://i.imgur.com/u6WttVo.png")
 img_office7 = simplegui.load_image("https://i.imgur.com/OTJsUEN.png")
 img_office8 = simplegui.load_image("https://i.imgur.com/aXZlot1.png")
+#---#
+img_base = simplegui.load_image("https://i.imgur.com/yUnw7Al.png")
+img_fail1 = simplegui.load_image("https://i.imgur.com/bZHGF9n.png")
+img_fail2 = simplegui.load_image("https://i.imgur.com/LhkKts3.png")
+img_jailf = simplegui.load_image("https://i.imgur.com/72vTOuv.png")
+img_jaild = simplegui.load_image("https://i.imgur.com/8TjShLU.png")
+img_jailc = simplegui.load_image("https://i.imgur.com/seKZMBi.png")
+img_cont = simplegui.load_image("https://i.imgur.com/YivkE2j.png")
+img_cont1a = simplegui.load_image("https://i.imgur.com/MyKmwNH.png")
+img_cont1b = simplegui.load_image("https://i.imgur.com/2T7hCuF.png")
+img_cont2a = simplegui.load_image("https://i.imgur.com/vb9Rss6.png")
+img_cont2b = simplegui.load_image("https://i.imgur.com/VgAj1iX.png")
+img_cont3a = simplegui.load_image("https://i.imgur.com/cDRJoGi.png")
+img_cont3b = simplegui.load_image("https://i.imgur.com/0dGYUBZ.png")
+img_cont4 = simplegui.load_image("https://i.imgur.com/ZQJSA9M.png")
+img_cont4f = simplegui.load_image("https://i.imgur.com/1v4wozF.png")
+img_ded = simplegui.load_image("https://i.imgur.com/redCUpa.png")
+img_lowpower = simplegui.load_image("https://i.imgur.com/YSIKMSv.png")
+img_wd = simplegui.load_image("https://i.imgur.com/FG8Veov.png")
 print("Done.")
 img_topping_list = [img_iconCheese, img_iconPepp, img_iconMush, img_iconOlive, img_iconBacon, img_iconBanana]
 img_customer_list = [img_customer1, img_customer2, img_customer3, img_customer4, img_customer5, img_customer6]
 current_customer = img_customer1
 img_office_list = [img_office1, img_office2, img_office3, img_office4, img_office5, img_office61, img_office7, img_office8]
+cutscene_images = []
 
 # Audio resources
 print("Loading sound resources...")
@@ -235,30 +262,60 @@ def bell_reset():
 		display_pizza.append(img_topping_list[i])
 	
 	if random.randint(1, 100) == 1:
-		if random.randint(1, 2) == 1:
-			current_customer = img_customer7
-		else:
-			current_customer = img_customer8
+		current_customer = random.choice([img_customer7, img_customer8, img_customer9])
 	else:
 		current_customer = img_customer_list[random.randint(0, 5)]
 
 # Start/restart game method
 def start_logic():
-	global flag_showTitle, flag_showEnding, flag_showGame
+	global timerIncome, timerEnding, timerHand, flag_business, flags_goons, flags_office, flag_showGame, flag_showTitle, flag_showEnding, flag_showCredits, flag_bigRedButton, money, goons, goon_efficiency, pizza_multiplier, goon_price,	geff_price, business_price, pizza_price, pizza_gamestate, score, timer_break, timer_order, ordered_pizza, player_pizza, display_pizza, cutscene_images
+	
+	timerIncome = 0
+	timerEnding = 0
+	timerHand = -1
+	flag_business = False
+	flags_goons = [False, False, False]
+	flags_office = [False, False, False, False, False, False, False, False]
 	flag_showGame = True
 	flag_showTitle = False
 	flag_showEnding = False
+	flag_showCredits = False
+	flag_bigRedButton = True
+
+	money = STARTING_MONEY
+	goons = 0
+	goon_efficiency = 1
+	pizza_multiplier = 15
+
+	goon_price = 10
+	geff_price = 50
+	business_price = 50
+	pizza_price = 1
+
+	pizza_gamestate = 0
+	score = 0
+	timer_break = BREAK_TIME
+	timer_order = ORDER_TIME
+	ordered_pizza = [0, 0, 0, 0, 0, 0]
+	player_pizza = [0, 0, 0, 0, 0, 0]
+	display_pizza = []
+	
+	cutscene_images = []
 
 # Ending button method
 def end_logic():
-	print("BIG RED BUTTON PRESSED!")
-	snd_bigRedButton.play()
+	global flag_bigRedButton, timerHand
+	if flag_bigRedButton == True:
+		snd_bigRedButton.play()
+		flag_bigRedButton = False
+		timerHand = HAND_TIME
 
 # Mouse handler
 def m_click(pos):
 	global player_pizza
 	
 	if flag_showGame:
+		
 		if pos[0] >= 100 and pos[0] <= 270:
 			if pos[1] >= 223 and pos[1] <= 263:
 				buy_goon()
@@ -308,20 +365,27 @@ def m_click(pos):
 				if pizza_gamestate == 1:
 					bell_reset()
 		
-	else:
+	elif flag_showTitle == True or flag_showCredits == True:
 		
 		start_logic()
 
 # Draw handler
 def draw(canvas):
-	global money, timerIncome, pizza_gamestate, timer_break, timer_order, display_pizza, current_customer
+	global money, timerIncome, pizza_gamestate, timer_break, timer_order, display_pizza, current_customer, flag_showGame, flag_showEnding, flag_showTitle, flag_showCredits, timerHand, timerEnding
 	
 	if flag_showGame:
-		# Manage money/income
+		
+		# Manage timers
 		timerIncome += 1
 		if timerIncome >= INCOME_TIME:
 			money += goons * goon_efficiency
 			timerIncome = 0
+		
+		if timerHand != -1:
+			timerHand -= 1
+			if timerHand == 0:
+				flag_showGame = False
+				flag_showEnding = True
 		
 		# Banner graphics
 		canvas.draw_image(img_bannerBase, (560, 87.5), (1120, 175), (FWC, 87), (1120, 175))
@@ -517,11 +581,101 @@ def draw(canvas):
 		tempeff = "Goon Efficiency: $" + str(goon_efficiency) + "/s"
 		canvas.draw_text(tempeff, (1110 - frame.get_canvas_textwidth(tempeff, 16), 120), 16, "White")
 		
-		canvas.draw_image(img_buttonEnding, (50, 50), (100, 100), (FWC, 402), (100, 100))
-	
-	else:
+		canvas.draw_image(img_buttonEnding, (75, 75), (150, 150), (FWC, 402), (150, 150))
 		
-		canvas.draw_image(img_logo, (650, 315), (1120, 630), (FWC, FHC), (1120, 630))
+		# The Hand
+		
+		if flag_bigRedButton == False:
+			
+			canvas.draw_image(img_base, (560, 315), (1120, 630), (FWC, FHC), (1120, 630))
+	
+	elif flag_showEnding == True:
+		
+		for img in cutscene_images:
+			canvas.draw_image(img, (560, 315), (1120, 630), (FWC, FHC), (1120, 630))
+		
+		timerEnding += 1
+		
+		if timerEnding == 1:
+			
+			if flags_office[0] == False and flags_office[2] == False:
+				cutscene_images.append(img_fail1)
+			else:
+				cutscene_images.append(img_cont)
+		
+		elif timerEnding == CUTSCENE_TIME:
+			
+			if flags_office[0] == False and flags_office[2] == False:
+				cutscene_images.append(img_fail2)
+			else:
+				if flags_office[0] == True:
+					cutscene_images.append(img_cont1a)
+				if flags_office[2] == True:
+					cutscene_images.append(img_cont1b)
+			
+		elif timerEnding == CUTSCENE_TIME * 2:
+			
+			if flags_office[0] == False and flags_office[2] == False:
+				cutscene_images.append(img_jailf)
+			elif flags_office[3] == False and flags_office[5] == False:
+				cutscene_images.append(img_fail2)
+			else:
+				if flags_office[3] == True:
+					cutscene_images.append(img_cont2a)
+				if flags_office[5] == True:
+					cutscene_images.append(img_cont2b)
+		
+		elif timerEnding == CUTSCENE_TIME * 3:
+			
+			if flags_office[0] == False and flags_office[2] == False:
+				flag_showEnding = False
+				flag_showCredits = True
+			elif flags_office[3] == False and flags_office[5] == False:
+				cutscene_images.append(img_jaild)
+			elif flags_office[1] == False and flags_office[6] == False:
+				cutscene_images.append(img_fail2)
+			else:
+				if flags_office[1] == True:
+					cutscene_images.append(img_cont3a)
+				if flags_office[6] == True:
+					cutscene_images.append(img_cont3b)
+		
+		elif timerEnding == CUTSCENE_TIME * 4:
+			
+			if flags_office[3] == False and flags_office[5] == False:
+				flag_showEnding = False
+				flag_showCredits = True
+			elif flags_office[1] == False and flags_office[6] == False:
+				cutscene_images.append(img_jailc)
+			elif flags_office[4] == False:
+				cutscene_images.append(img_cont4f)
+			else:
+				cutscene_images.append(img_cont4)
+		
+		elif timerEnding == CUTSCENE_TIME * 5:
+			
+			if flags_office[1] == False and flags_office[6] == False:
+				flag_showEnding = False
+				flag_showCredits = True
+			elif flags_office[4] == False:
+				cutscene_images.append(img_ded)
+			elif flags_office[7] == False:
+				cutscene_images.append(img_lowpower)
+			else:
+				cutscene_images.append(img_wd)
+		
+		elif timerEnding >= CUTSCENE_TIME * 6:
+			
+			flag_showEnding = False
+			flag_showCredits = True
+	
+	elif flag_showCredits == True:
+		
+		canvas.draw_image(img_credits, (560, 315), (1120, 630), (FWC, FHC), (1120, 630))
+		
+	elif flag_showTitle == True:
+		
+		canvas.draw_image(img_logo, (560, 315), (1120, 630), (FWC, FHC), (1120, 630))
 
 # Game frame setup
 frame = simplegui.create_frame("The Big Cheese", FWIDTH, FHEIGHT)
